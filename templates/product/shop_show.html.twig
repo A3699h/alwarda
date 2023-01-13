@@ -1,0 +1,116 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Product details{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Product details
+        </h3>
+    </div>
+
+    <div class="d-flex flex-column ">
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>SKU</th>
+                                <td>{{ product.SKU }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ product.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ product.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>{{ product.type|capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <th>Color</th>
+                                <td>
+                                    <div class="badge"
+                                         style="
+                                                 background-color: {{ productColors[product.color] }};
+                                                 border: 1px solid #000000;
+                                                 ">{{ product.color|capitalize }}</div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Long description (English)
+                        <hr>
+                    </div>
+                    <div>
+                        {{ product.longDescription|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Long description (Arabic)
+                        <hr>
+                    </div>
+                    <div>
+                        {{ product.longDescriptionAr|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Images
+                        <hr>
+                    </div>
+                    <div>
+                        {% for image in product.images %}
+                            <img class="img-fluid"
+                                 src="{{ vich_uploader_asset(image, 'imageFile') }}"
+                                 style="border-radius: unset; width: 150px; height: auto; ">
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-around flex-wrap">
+                        {% if app.user in product.users %}
+                            <a href="{{ path('unassign_product_from_shop', {id: product.id}) }}" class="btn btn-danger cant-provide" data-id-product="{{ product.id }}">
+                                Can't provide
+                            </a>
+                        {% else %}
+                            <a href="{{ path('assign_product_to_shop', {id: product.id}) }}" class="btn btn-success can-provide" data-id-product="{{ product.id }}">
+                                Can provide
+                            </a>
+
+                        {% endif %}
+                        <a href="{{ path('order_index') }}"
+                           class="btn btn-light ">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

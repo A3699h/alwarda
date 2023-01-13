@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Edit product
+        </h3>
+    </div>
+
+    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+{% endblock %}

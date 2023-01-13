@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product details{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Product details
+        </h3>
+    </div>
+
+    <div class="d-flex flex-column ">
+        <div class="w-100 d-flex justify-content-around flex-wrap">
+            <div class="card col-lg-5 mt-3">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>SKU</th>
+                                <td>{{ product.SKU }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ product.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ product.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>{{ product.type|capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <th>Color</th>
+                                <td>
+                                    <div class="badge"
+                                         style="
+                                                 background-color: {{ product.color.code }};
+                                                 border: 1px solid #000000;
+                                                 ">
+                                    </div>
+                                    {{ product.color.color|capitalize }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-lg-5 mt-3">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>Cost</th>
+                                <td>{{ product.cost }} SAR</td>
+                            </tr>
+                            <tr>
+                                <th>Profit</th>
+                                <td>{{ product.benefit }} SAR</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>{{ product.price }} SAR</td>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <td>
+                                    <a href="{{ path('category_show', {id: product.category.id}) }}"
+                                       target="_blank">{{ product.category }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Enabled</th>
+                                <td>
+                                    {% if product.enabled %}
+                                        <i class="fas fa-check text-success"
+                                           style="font-size: 1.5rem"></i>
+                                    {% else %}
+                                        <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Visible on store</th>
+                                <td>
+                                    {% if product.visible %}
+                                        <i class="fas fa-check text-success"
+                                           style="font-size: 1.5rem"></i>
+                                    {% else %}
+                                        <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Accept discounts</th>
+                                <td>
+                                    {% if product.discountable %}
+                                        <i class="fas fa-check text-success"
+                                           style="font-size: 1.5rem"></i>
+                                    {% else %}
+                                        <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Is a package</th>
+                                <td>
+                                    {% if product.package %}
+                                        <i class="fas fa-check text-success"
+                                           style="font-size: 1.5rem"></i>
+                                    {% else %}
+                                        <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Long description
+                        <hr>
+                    </div>
+                    <div>
+                        {{ product.longDescription|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Images
+                        <hr>
+                    </div>
+                    <div>
+                        {% for image in product.images %}
+                            <img class="img-fluid"
+                                 src="{{ vich_uploader_asset(image, 'imageFile') }}"
+                                 style="border-radius: unset; width: 150px; height: auto; ">
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Stock activity
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table table">
+                            <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Shop</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in product.users %}
+                                <tr>
+                                    <td>{{ user.area.nameEn|default('') }}</td>
+                                    <td>{{ user.fullName }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-around flex-wrap">
+                        <a href="{{ path('product_edit', {id: product.id}) }}" class="btn btn-primary ">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

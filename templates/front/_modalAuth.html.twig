@@ -1,0 +1,113 @@
+<div id="authModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog sign-up-part d-none">
+        <div class="modal-content">
+            <div class="header">
+                <h1 class="big-title w-100 text-center">{{ 'Sign Up'|trans  }}</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="text-danger mt-3"></span>
+            </div>
+            <div class="modal-body mb-5 col-12 col-md-10 container d-flex flex-column justify-content-around">
+                <form method="post" id="signUpForm">
+                    <div class="form-group">
+                        <input name="fullName" type="text" class="form-control" placeholder="Name" required>
+                    </div>
+                    <div class="form-group d-flex">
+                        <input id="signUp-phone-code" type="text" class="form-control col-3" value="+966">
+                        <input id="signUp-phone-number" type="number" class="form-control col-9"
+                               placeholder="Phone number">
+                        <input id="signUp-phone" type="hidden" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <input name="email" type="email" autocomplete="off" class="form-control"
+                               placeholder="Email address">
+                    </div>
+                    <div class="form-group d-flex">
+                        <input id="passwordInput" name="password[first]" type="password" class="form-control col-10"
+                               placeholder="Password">
+                        <button type="button" class="btn col-2 eyeBtn">
+                            <img src="{{ asset('build/front/display-password.png') }}"
+                                 alt="display password icon">
+                        </button>
+                    </div>
+                    <div class="form-group d-flex">
+                        <input name="password[second]" type="password" class="form-control col-10"
+                               placeholder="Repeat Password">
+                        <button type="button" class="btn col-2 eyeBtn">
+                            <img src="{{ asset('build/front/display-password.png') }}"
+                                 alt="display password icon">
+                        </button>
+                    </div>
+                </form>
+                {#                <div class="custom-control custom-checkbox mr-sm-2">#}
+                {#                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing">#}
+                {#                    <label class="custom-control-label" for="customControlAutosizing">I have read and agreed to the#}
+                {#                        privacy policy</label>#}
+                {#                </div>#}
+                <div class="text-center mt-5">
+                    <button id="signUpBtn" class="btn">{{ 'Sign Up'|trans  }}</button>
+                </div>
+                <div class="text-center mt-4">
+                    <p>{{ 'Already have an account?'|trans  }} <a href="#" class="redirectSignInBtn">{{ 'Sign In'|trans  }}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog sign-in-part d-none">
+        <div class="modal-content">
+            <div class="header">
+                <h1 class="big-title w-100 text-center">{{ 'Sign In'|trans  }}</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="text-danger mt-3"></span>
+            </div>
+            <div class="modal-body mb-5 col-12 col-md-10 container d-flex flex-column justify-content-around">
+                <form method="post" id="signInForm">
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}">
+                    <div class="form-group">
+                        <input name="email" type="email" autocomplete="off" class="form-control"
+                               placeholder="Email address">
+                    </div>
+                    <div class="form-group d-flex">
+                        <input name="password" type="password" class="form-control col-10" placeholder="Password">
+                        <button class="btn col-2 eyeBtn">
+                            <img src="{{ asset('build/front/display-password.png') }}"
+                                 alt="display password icon">
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-5">
+                    <button class="btn" id="signInBtn">{{ 'Sign In'|trans  }}</button>
+                </div>
+                <div class="text-center mt-4">
+                    <p>{{ "You don't have an account?"|trans  }} <a href="#" class="redirectSignUpBtn">{{ 'Sign Up'|trans  }}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog verification-code d-none">
+        <div class="modal-content">
+            <div class="header">
+                <h1 class="big-title w-100 text-center">{{ 'Verification Code'|trans  }}</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="text-danger mt-3"></span>
+            </div>
+            <div class="modal-body mb-5 col-12 col-md-10 container d-flex flex-column justify-content-around">
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}">
+                <div class="form-group">
+                    <input id="verifCodeInput" name="verifCode" type="text" autocomplete="off" class="form-control"
+                           placeholder="Verification Code recievec by SMS">
+                </div>
+                <div class="text-center mt-5">
+                    <button class="btn" id="verifyBtn">{{ 'Verify'|trans  }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}City details{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            City details : {{ area.nameEn }}
+        </h3>
+    </div>
+
+
+    <div class="d-flex flex-column ">
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name (English)</th>
+                            <th>Name (Arabic)</th>
+                            <th>Delivery price (SAR)</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ area.nameEn }}</td>
+                            <td>{{ area.nameAr }}</td>
+                            <td>{{ area.deliveryPrice }} SAR</td>
+                            <td>
+                                {% if(area.active == '1') %}
+                                    <div class="badge badge-success"
+                                         style="width: 70px; font-size: 1rem;">
+                                        Active
+                                    </div>
+                                {% else %}
+                                    <div class="badge badge-danger"
+                                         style="width: 70px; font-size: 1rem;">
+                                        Unactive
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-around flex-wrap">
+                    <a href="{{ path('area_edit', {id: area.id}) }}" class="btn btn-primary ">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category details{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Category details
+        </h3>
+    </div>
+    <div class="d-flex justify-content-around flex-wrap">
+        <div class="card col-lg-4 mb-3 mb-lg-0 h-100">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Category Name</th>
+                            <td>{{ category.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Display icon</th>
+                            <td>
+                                <img class="img-fluid"
+                                     src="
+                                     {% if category.icon is not null %}
+                                        {{ vich_uploader_asset(category, 'iconFile') }}
+                                     {% else %}
+                                        {{ asset('/build/dashboard/no_image.png') }}
+                                     {% endif %}
+                                    "
+                                     alt="{{ category.icon }}"
+                                     style="border-radius: unset; width: 150px; height: auto; ">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-around flex-wrap">
+                    <a href="{{ path('category_edit', {id: category.id}) }}" class="btn btn-primary ">Edit</a>
+                </div>
+            </div>
+        </div>
+        <div class="card col-lg-7">
+            <div class="card-title mt-3 text-info">
+                Associated products
+                <hr>
+            </div>
+            {{ category.products|length }} product(s) in this category
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                    <tr class="d-flex flex-wrap">
+                        {% for product in category.products %}
+                            <td>
+                                <a href="{{ path('product_show', {id: product.id}) }}"
+                                   target="_blank">{{ product.name }}</a>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

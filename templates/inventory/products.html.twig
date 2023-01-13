@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title|capitalize }} products{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            {{ title|capitalize }} products
+        </h3>
+    </div>
+
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.SKU }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>
+                                <img class="img-fluid"
+                                     src="
+                                {% if product.images|length > 0 %}
+                                    {{ vich_uploader_asset(product.images[0], 'imageFile') }}
+                                {% else %}
+                                    {{ asset('build/dashboard/no_image.png') }}
+                                {% endif %}
+                                        "
+                                     style="border-radius: unset; width: 100px; height: auto; ">
+                            </td>
+                            <td>{{ product.category.name }}</td>
+                            <td>
+                                {% if title == 'available' %}
+                                    <button class="btn btn-success can-provide" data-id-product="{{ product.id }}">
+                                        Can provide
+                                    </button>
+                                {% elseif title == 'provided' %}
+                                    <button class="btn btn-danger cant-provide" data-id-product="{{ product.id }}">
+                                        Can't provide
+                                    </button>
+                                {% endif %}
+                                <a class="btn btn-info" target="_blank" href="{{ path('shop_product_show', {'id': product.id}) }}">
+                                    Show
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('productsShop') }}
+{% endblock %}

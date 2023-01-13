@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Clients
+                        <i class="mdi mdi-account-multiple mdi-24px float-right"></i>
+                    </h4>
+                    <table class="table table-borderless text-white">
+                        <tbody>
+                        <tr>
+                            <th>Total</th>
+                            <td>{{ data['clients']['total'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>This week</th>
+                            <td>{{ data['clients']['week'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>This month</th>
+                            <td>{{ data['clients']['month'] }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Orders
+                        <i class="fas fa-shopping-cart  mdi-24px float-right"></i>
+                    </h4>
+                    <table class="table table-borderless text-white">
+                        <tbody>
+                        <tr>
+                            <th>Total</th>
+                            <td>{{ data['orders']['total'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>This week</th>
+                            <td>{{ data['orders']['week'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>This Month</th>
+                            <td>{{ data['orders']['month'] }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Average Sales (SAR)
+                        <i class="fas fa-money-bill mdi-24px float-right"></i>
+                    </h4>
+                    <table class="table table-borderless text-white">
+                        <tbody>
+                        <tr>
+                            <td>Total</td>
+                            <td>{{ data['avgSales']['total']|round(2,'floor') }}</td>
+                        </tr>
+                        <tr>
+                            <td>This week</td>
+                            <td>{{ data['avgSales']['week']|round(2,'floor') }}</td>
+                        </tr>
+                        <tr>
+                            <td>This month</td>
+                            <td>{{ data['avgSales']['month']|round(2,'floor') }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Shops
+                        <i class="fas fa-store mdi-24px float-right"></i>
+                    </h4>
+                    <h2>{{ data['nbShops'] }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Products
+                        <i class="mdi mdi-book mdi-24px float-right"></i>
+                    </h4>
+                    <h2>{{ data['nbProducts'] }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Total Income
+                        <i class="fas fa-money-bill-wave mdi-24px float-right"></i>
+                    </h4>
+                    <h2>{{ data['totalIncome']|round(2,'floor') }} SAR</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-around mb-3 flex-wrap">
+                <button id="weekChart" class="btn btn-primary mb-1">Clients / Week</button>
+                <button id="monthChart" class="btn btn-danger mb-1">Clients / Month</button>
+                <button id="yearChart" class="btn btn-info mb-1">Clients / Year</button>
+            </div>
+            <canvas id="clientsChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="d-flex justify-content-around mb-3 flex-wrap">
+                <button id="weekOrdersChart" class="btn btn-primary mb-1">Orders Last Week</button>
+                <button id="monthOrdersChart" class="btn btn-danger mb-1">Orders Last Month</button>
+                <button id="yearOrdersChart" class="btn btn-info mb-1">Orders Last Year</button>
+            </div>
+            <canvas id="mapChart"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('dashboard') }}
+{% endblock %}

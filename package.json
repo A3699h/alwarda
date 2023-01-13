@@ -1,0 +1,35 @@
+{
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@symfony/webpack-encore": "^0.29.0",
+    "core-js": "^3.0.0",
+    "node-sass": "^4.14.0",
+    "regenerator-runtime": "^0.13.2",
+    "sass-loader": "7.0.1",
+    "webpack-notifier": "^1.6.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "dependencies": {
+    "@mdi/font": "^3.8.95",
+    "bootstrap": "^4.4.1",
+    "bootstrap-datepicker": "^1.9.0",
+    "bootstrap-datetimepicker-4.17.37": "^4.17.37",
+    "bootstrap4-toggle": "^3.6.1",
+    "chart.js": "^2.9.3",
+    "chartjs-chart-geo": "^2.1.0",
+    "compass-mixins": "^0.12.10",
+    "datatables.net-bs4": "^1.10.20",
+    "jquery": "^3.5.0",
+    "jquery-ui": "^1.12.1",
+    "popper.js": "^1.16.1",
+    "select2": "~4.0",
+    "select2-bootstrap-theme": "^0.1.0-beta.10"
+  }
+}

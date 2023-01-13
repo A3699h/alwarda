@@ -1,0 +1,66 @@
+{{ form_start(form) }}
+<div class="d-flex flex-column ">
+    <div class="w-100 d-flex justify-content-around flex-wrap">
+        <div class="card col-lg-11">
+            <div class="card-body">
+                {{ form_row(form.title) }}
+                {{ form_row(form.titleAr) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.descriptionAr) }}
+                {{ form_row(form.imageFile) }}
+                {{ form_row(form.published) }}
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info d-flex justify-content-between align-items-center">
+                    Article sections
+                    <button type="button"
+                            class="add-another-collection-widget btn btn-success btn-sm"
+                            data-list-selector="#article-sections-list">
+                        <i class="mdi mdi-plus text-white icon-md mdi-24px"></i>
+                    </button>
+                </div>
+                <hr>
+                <div>
+                    <div id="article-sections-list"
+                         class="products"
+                         data-prototype="{{ form_widget(form.sections.vars.prototype)|e }}"
+                         data-widget-tags="{{ '<div class="card-body mt-4 newSectionCard"></div>'|e }}"
+                         data-widget-counter="{{ form.sections|length }}">
+                        {% for section in form.sections %}
+                            {{ form_row(section, {attr:{class:'card-body mt-4 newSectionCard'}}) }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-around flex-wrap">
+                    <button class="btn btn-primary ">{{ button_label|default('Save') }}</button>
+                    {% if form.vars.value.id is not null %}
+                        <a href="{{ path('delete_blog', {'id': article.id}) }}"
+                           class="btn btn-danger ">Delete</a>
+                        <a href="{{ path('front_blog_single', {'slug': article.slug}) }}"
+                           target="_blank"
+                           class="btn btn-info ">View</a>
+                    {% endif %}
+                    <a href="{{ path('list_blogs') }}" class="btn btn-light ">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('blogForm') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('blogForm') }}
+{% endblock %}

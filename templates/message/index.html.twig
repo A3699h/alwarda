@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Messages
+        </h3>
+    </div>
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Client full name</th>
+                        <th>last message</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for userId, disc in discussions %}
+                        <tr {% if (disc|last).sender.role == 'ROLE_CLIENT' and (disc|last).new %}class="table-success"{% endif %}>
+                            <td>
+                                {% if (disc|last).sender and (disc|last).sender.role == 'ROLE_CLIENT' %}
+                                    {{ (disc|last).sender.fullname }}
+                                {% elseif (disc|last).reciever and (disc|last).reciever.role == 'ROLE_CLIENT' %}
+                                    {{ (disc|last).reciever.fullname }}
+                                {% endif %}
+                            </td>
+                            <td>{{ (disc|last).message }}</td>
+                            <td>
+                                <a href="{{ path('show_discussion', {'id': userId}) }}">
+                                    <i class="fas fa-envelope-open-text text-info" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

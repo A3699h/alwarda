@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discount vouchers list{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Discount vouchers
+        </h3>
+        <button id="modal-vouchers"
+                style="padding: 0;"
+                type="button"
+                class="btn"
+                data-toggle="modal"
+                data-target="#modalVouchers">
+            <i class="fas fa-plus-circle text-primary" style="font-size: 1.5rem"></i>
+        </button>
+    </div>
+    <div class="card" style="min-height: 100%">
+        <div class="card-header d-flex flex-wrap">
+            <div class="mr-4">
+                <div style="width: 25px;height: 15px;" class="mr-1 bg-success d-inline-block"></div>
+                Active voucher
+            </div>
+            <div class="mr-4">
+                <div style="width: 25px;height: 15px;" class="mr-1 bg-danger d-inline-block"></div>
+                Expired voucher
+            </div>
+            <div class="mr-4">
+                <div style="width: 25px;height: 15px;" class="mr-1 bg-warning d-inline-block"></div>
+                Future voucher
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>Discount</th>
+                        <th>Uses</th>
+                        <th>Max uses</th>
+                        <th>Uses / Client</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for voucher in discountVouchers %}
+                        <tr>
+                            <td class="
+                            {% if voucher.endDate >= date() %}
+                                {% if voucher.startDate <= date() %}
+                                    text-success
+                                {% else %}
+                                    text-warning
+                                {% endif %}
+                            {% else %}
+                                text-danger
+                            {% endif %}
+">{{ voucher.code }}</td>
+                            <td>{{ voucher.startDate|date("d M Y") }}</td>
+                            <td>{{ voucher.endDate|date("d M Y") }}</td>
+                            <td>{{ voucher.discountPercentage }} %</td>
+                            <td>{{ voucher.uses ?? 0 }}</td>
+                            <td>{{ voucher.maxUse }}</td>
+                            <td>{{ voucher.clientMaxUse }}</td>
+                            <td>
+                                <a href="{{ path('discount_voucher_edit', {'id': voucher.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalVouchers" tabindex="-1" role="dialog"
+         aria-labelledby="modalVouchersTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalVouchersTitle">Add a new voucher</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="submit-voucher" type="submit" class="btn btn-primary">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let formInvalid = parseFloat({{ formInvalid }});
+    </script>
+    {{ encore_entry_script_tags('discountVoucher') }}
+{% endblock %}

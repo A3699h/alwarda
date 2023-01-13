@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Order{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Edit order : {{ order.reference }}
+        </h3>
+    </div>
+
+
+    {{ include('order/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+{% endblock %}

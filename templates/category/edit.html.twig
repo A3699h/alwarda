@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Edit category
+        </h3>
+    </div>
+
+    {{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('categories') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('categories') }}
+{% endblock %}

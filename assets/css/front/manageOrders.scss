@@ -1,0 +1,88 @@
+.ordersChoice {
+  .btn {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 25px;
+    color: #242629;
+    opacity: 0.3;
+    border: 1px solid #95C0BC;
+    box-sizing: border-box;
+    border-radius: 17.5px;
+    padding: 0.5rem 1.5rem;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &.active, &:hover {
+      opacity: 1;
+      border: 1px solid #F86140;;
+    }
+  }
+}
+
+.ordersSection {
+  h4 {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    color: #343434;
+  }
+
+  h5 {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+    text-transform: uppercase;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: #343434;
+  }
+
+  h6 {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: #828282;
+  }
+
+  .orderItem {
+    background: #F1F8F7;
+    padding: 1rem;
+  }
+
+  .trackBtnn .cancelBtn {
+    &:focus {
+      box-shadow: none;
+    }
+
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .trackBtn {
+    color: #343434;
+    border: 1px solid #F86140;
+    box-sizing: border-box;
+    border-radius: 30.5px;
+  }
+
+  .cancelBtn {
+    color: #FFFFFF;
+    background: #F86140;
+    border-radius: 30.5px;
+  }
+}
+
+

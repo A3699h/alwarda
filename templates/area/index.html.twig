@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Cities{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Cities
+        </h3>
+        <button id="modal-inventory"
+                style="padding: 0;"
+                type="button"
+                class="btn"
+                data-toggle="modal"
+                data-target="#modalArea">
+            <i class="fas fa-plus-circle text-primary" style="font-size: 1.5rem"></i>
+        </button>
+    </div>
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name En</th>
+                        <th>Name Ar</th>
+                        <th>Delivery price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for area in areas %}
+                        <tr>
+                            <td>{{ area.nameEn }}</td>
+                            <td>{{ area.nameAr }}</td>
+                            <td>{{ area.deliveryPrice }} SAR</td>
+                            <td>
+                                {% if(area.active == '1') %}
+                                    <div class="badge badge-success"
+                                         style="width: 70px; font-size: 1rem;">
+                                        Active
+                                    </div>
+                                {% else %}
+                                    <div class="badge badge-danger"
+                                         style="width: 70px; font-size: 1rem;">
+                                        Unactive
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('area_show', {'id': area.id}) }}">
+                                    <i class="mdi mdi-eye text-primary" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('area_delete', {'id': area.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('area_edit', {'id': area.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalArea" tabindex="-1" role="dialog"
+         aria-labelledby="modalAreaTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAreaTitle">Add a new city</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="submit-inventory" type="submit" class="btn btn-primary">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

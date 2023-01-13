@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Privacy Policies{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Edit Privacy Policies
+        </h3>
+    </div>
+
+    <div class="w-100 d-flex justify-content-center">
+        <div class="card col-lg-11">
+            <div class="card-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <div class="d-flex justify-content-around flex-wrap">
+                    <button class="btn btn-primary ">{{ button_label|default('Save') }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

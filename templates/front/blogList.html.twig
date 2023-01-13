@@ -1,0 +1,58 @@
+{% extends 'front/base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('blogList') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('blogList') }}
+{% endblock %}
+
+{% block body %}
+    {% if app.request.locale == 'ar' %}
+        <style>
+            .custom_breadcrumb, .header-section {
+                direction: rtl;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                text-align: right;
+            }
+            p{
+                text-align: right;
+            }
+
+        </style>
+    {% endif %}
+    <div class="container col-lg-7 custom_breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb pl-0">
+                <li class="breadcrumb-item"><a href="{{ path('front_index') }}">{{ 'Home'|trans  }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'Blog'|trans  }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="header-section d-lg-block d-flex flex-column justify-content-between align-items-start container col-lg-9 offset-lg-2">
+        <h1 class="big-title">{{ 'Our Blog'|trans  }}</h1>
+        <div class="blogSection d-flex flex-wrap justify-content-between mt-4">
+            {% for article in articles %}
+                <div class="col-lg-4 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <img class="w-100" src="{{ vich_uploader_asset(article,'imageFile') }}" alt="blog image">
+                        </div>
+                        <div class="card-body">
+                            <a target="_blank" href="{{ path('front_blog_single', {'slug': article.slug}) }}"> <h5>{{ app.request.locale == 'en' ? article.title : article.titleAr }}</h5></a>
+                            <p>{{ app.request.locale == 'en' ? article.description : article.descriptionAr }}.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if pages > 1 %}
+            <div class="d-flex justify-content-center mt-5 ">
+                <button class="btn moreBtn" data-imagespath="{{ asset('blog_images') }}">Load more</button>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+

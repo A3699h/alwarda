@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('build/dashboard/favicon.png') }}"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+    <script src="https://secure.gosell.io/js/sdk/tap.min.js"></script>
+    {{ encore_entry_link_tags('frontApp') }}
+    {% block stylesheets %}{% endblock %}
+    <title>{{ 'Alwarda'|trans  }}</title>
+</head>
+<body data-locale="{{ app.request.locale }}" lang="{{ app.request.locale }}">
+<div id="loading-spinner" class="position-fixed" style="display:none !important;">
+    <div class="spinner-border  position-absolute"
+         role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+    {% include 'front/navbar.html.twig' %}
+
+    <div class="main-container">
+        {% block body %}{% endblock %}
+    </div>
+
+{% include 'front/footer.html.twig' %}
+
+<div style="position: fixed !important; right: 20px !important;bottom: 20px !important;z-index: 10 !important;">
+    <a href="https://wa.me/00966562116558" target="_blank">
+        <img style="width: 50px !important;"
+                src="{{ asset('build/front/whatsapp.svg') }}" alt="whatsapp chat open">
+    </a>
+</div>
+</body>
+{{ encore_entry_script_tags('frontApp') }}
+{% block javascripts %}{% endblock %}
+</html>

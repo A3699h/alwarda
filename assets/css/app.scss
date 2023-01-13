@@ -1,0 +1,83 @@
+//@import "~bootstrap";
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import '../css/template/scss/variables';
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+@import "~bootstrap/scss/bootstrap";
+@import "../css/template/scss/fonts";
+@import "../css/template/scss/functions";
+/* === Icon fonts === */
+@import "~@mdi/font/scss/materialdesignicons";
+/* === Template mixins === */
+@import "../css/template/scss/mixins/animation";
+@import "../css/template/scss/mixins/badges";
+@import "../css/template/scss/mixins/buttons";
+@import "../css/template/scss/mixins/misc";
+@import "../css/template/scss/mixins/color-functions";
+@import "../css/template/scss/mixins/cards";
+@import "../css/template/scss/mixins/blockqoute";
+@import "../css/template/scss/mixins/popovers";
+@import "../css/template/scss/mixins/tooltips";
+/* === Core Styles === */
+@import "../css/template/scss/background";
+@import "../css/template/scss/typography";
+@import "../css/template/scss/reset";
+@import "../css/template/scss/responsive";
+@import "../css/template/scss/misc";
+@import "../css/template/scss/utilities";
+@import "../css/template/scss/demo";
+@import "../css/template/scss/spinner";
+/* === Components === */
+@import "../css/template/scss/components/forms";
+@import "../css/template/scss/components/checkbox-radio";
+@import "../css/template/scss/components/icons";
+@import "../css/template/scss/components/tables";
+@import "../css/template/scss/components/accordions";
+@import "../css/template/scss/components/buttons";
+@import "../css/template/scss/components/breadcrumbs";
+@import "../css/template/scss/components/badges";
+@import "../css/template/scss/components/cards";
+@import "../css/template/scss/components/preview";
+@import "../css/template/scss/components/tooltips";
+@import "../css/template/scss/components/popovers";
+@import "../css/template/scss/components/lists";
+@import "../css/template/scss/components/bootstrap-progress";
+@import "../css/template/scss/components/bootstrap-alerts";
+@import "../css/template/scss/components/tabs";
+@import "../css/template/scss/components/dropdowns";
+@import "../css/template/scss/components/pagination";
+@import "../css/template/scss/components/portfolio";
+@import "../css/template/scss/components/todo-list";
+@import "../css/template/scss/components/landing-screens/auth";
+/* === Layout === */
+@import "../css/template/scss/layout";
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+@import "~bootstrap4-toggle/css/bootstrap4-toggle.min.css";
+@import "~bootstrap/scss/modal";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import "~select2/dist/css/select2.min.css";
+@import "~select2-bootstrap-theme/dist/select2-bootstrap.min.css";
+@import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css";
+
+#loading-spinner {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.1);
+
+  div {
+    width: 3rem;
+    height: 3rem;
+    top: 50%;
+    left: 50%;
+  }
+}
+
+.datepicker {
+  z-index: 2000 !important;
+}

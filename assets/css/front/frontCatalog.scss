@@ -1,0 +1,322 @@
+@import "functions";
+
+.header-section {
+  margin-left: 22%;
+  @media screen and (max-width: 992px) {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+.categories-section {
+  margin-top: 2rem;
+  @media screen and (max-width: 992px) {
+    margin-top: 0;
+  }
+
+  #catalogSelect {
+    background-color: transparent;
+    font-family: Raleway, serif;
+    font-weight: 800;
+    font-size: 0.875rem;
+    font-style: normal;
+    line-height: 25px;
+    border: 1px solid var(--blue-color-2);
+    box-sizing: border-box;
+    border-radius: 17.5px;
+    color: #4D4D4D;
+    padding: 0.6rem 1.5rem;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: url("../../images/front/arrow-down.svg") 93% 50% no-repeat;
+    background-size: 1rem;
+  }
+
+  button {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: appGetWidth(16);
+    line-height: appGetWidth(25);
+    color: #242629;
+    opacity: 0.5;
+    border-radius: 20px;
+    margin-right: 0.5rem;
+    border: 1px solid var(--blue-color-2);
+    box-sizing: border-box;
+
+    &.active, &:hover {
+      border: 1px solid var(--orange-color);
+      box-sizing: border-box;
+      opacity: 1;
+    }
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+}
+
+.body-section {
+  .filter-section {
+    width: 22%;
+    @media screen and (max-width: 992px) {
+      width: 100%;
+    }
+
+    .dropdown {
+
+      background-color: transparent;
+      border: none;
+      font-family: Raleway, serif;
+      font-weight: 800;
+      font-size: 0.8rem;
+
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      appearance: none;
+      background: url("../../images/front/arrow-down.svg") 93% 35% no-repeat;
+      background-size: 1rem;
+
+      @media screen and (max-width: 992px) {
+        background: url("../../images/front/arrow-down.svg") 90% 50% no-repeat;
+        background-size: 1rem;
+      }
+
+      .btn {
+        padding: 0 1.5rem 0.5rem 0.5rem;
+        border-bottom: 1px solid #95C0BC;
+
+        @media screen and (max-width: 992px) {
+          font-family: Raleway, serif;
+          font-style: normal;
+          font-weight: 500;
+          color: #242629;
+          border-radius: 20px;
+          border: 1px solid var(--blue-color-2);
+          box-sizing: border-box;
+          padding: 0.5rem 2.5rem;
+        }
+
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+
+      .dropdown-menu a {
+        font-family: Raleway, serif;
+        //font-weight: 800;
+        font-size: 0.8rem;
+      }
+
+
+    }
+
+    span {
+      font-family: Raleway, serif;
+      padding-left: 0.5rem;
+    }
+  }
+
+  span.prices {
+    font-size: 1.2rem;
+  }
+
+  #priceFilter {
+    height: 0 !important;
+    border: none;
+    border-bottom: 2px solid #DDDDDD !important;
+    padding-top: 1%;
+    width: 100%;
+    z-index: 0;
+
+
+    .ui-slider-handle {
+      border-radius: 50% !important;
+      background: #F86140;
+      height: 0.8rem;
+      width: 0.8rem;
+
+      &:focus {
+        border: none;
+        border-radius: 50% !important;
+      }
+    }
+
+    .ui-slider-range {
+      height: 0;
+      border: 2px solid #F86140;
+    }
+
+  }
+
+  .products-section {
+    width: 78%;
+
+    @media screen and (max-width: 992px) {
+      width: 100%;
+    }
+  }
+}
+
+.footer-section {
+  width: 78%;
+  margin-left: 22%;
+  @media screen and (max-width: 992px) {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 15% !important;
+  }
+
+  .load-more-btn {
+    color: var(--orange-color);
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
+
+    border: 1px solid #95C0BC;
+    border-radius: 20px;
+    padding: 0.5rem 2rem;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &:hover {
+      background-color: rgba(149, 192, 188, 0.1);
+    }
+  }
+}
+
+#productSection {
+  .flower-card {
+    background: #F1F8F7;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    @media screen and (max-width: 992px) {
+      &:hover {
+        transform: scale(1);
+      }
+    }
+
+    .flower-image-container {
+      height: appGetWidth(300);
+      padding: 0.5rem;
+      @media screen and (max-width: 992px) {
+        height: 35vw;
+      }
+      @media screen and (max-width: 576px) {
+        height: 50vh;
+      }
+
+      & img {
+        width: 100%;
+      }
+    }
+
+    h3 {
+      font-family: Playfair Display, serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: appGetWidth(16);
+      line-height: appGetWidth(21);
+      color: #F86140;
+      @media screen and (max-width: 992px) {
+        font-size: 1rem;
+        padding-top: 0.7rem;
+      }
+    }
+
+    h4 {
+      font-family: Raleway, serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 1.12rem;
+      line-height: 1.3rem;
+      text-align: center;
+      text-transform: uppercase;
+      font-feature-settings: 'pnum' on, 'lnum' on;
+      padding-top: 1rem;
+    }
+
+    .flower-card-footer {
+      h4 {
+        font-family: Raleway, serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: appGetWidth(14);
+        line-height: appGetWidth(16);
+        text-transform: capitalize;
+        font-feature-settings: 'pnum' on, 'lnum' on;
+        color: #4D4D4D;
+        margin: 0;
+      }
+
+      img {
+        width: appGetWidth(17);
+      }
+
+      button {
+        &:focus {
+          box-shadow: none;
+        }
+      }
+
+      .cart-icon {
+        background-color: #FF5A5A;
+        border-radius: 50%;
+        width: appGetWidth(40);
+        height: appGetWidth(40);
+        padding: 0;
+
+        &:hover {
+          box-shadow: 0 0 0 0.2rem rgba(255, 90, 90, 0.3);
+        }
+      }
+    }
+
+    .flower-card-footer-mobile {
+
+      padding: 0.3rem 1rem;
+
+      button:focus {
+        box-shadow: none;
+      }
+
+      button:first-child {
+        background: #FF5A5A;
+        border-radius: 17.8091px;
+        font-size: 0.8rem;
+        line-height: 1rem;
+        text-align: center;
+        font-feature-settings: 'pnum' on, 'lnum' on;
+        color: #FFFFFF;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        font-family: Raleway, serif;
+      }
+
+      button:last-child {
+        border: 1.07469px solid var(--blue-color-2);
+        box-sizing: border-box;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        padding: 0;
+
+        img {
+          width: 0.75rem;
+        }
+      }
+    }
+  }
+}

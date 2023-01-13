@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('build/dashboard/favicon.png') }}"/>
+    <title>Error {{ status_code }}</title>
+    {{ encore_entry_link_tags('app') }}
+</head>
+<body style="height: 100vh;">
+<div class="d-flex align-items-center text-center error-page bg-primary pt-5 pb-4 h-100">
+    <div class="row flex-grow">
+        <div class="col-lg-7 mx-auto text-white">
+            <div class="row align-items-center d-flex flex-row">
+                <div class="col-lg-6 text-lg-right pr-lg-4">
+                    <h1 class="display-1 mb-0">{{ status_code }}</h1>
+                </div>
+                <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
+                    <h2>{{ status_text }}!</h2>
+                    {% if status_code == '404' %}
+                        <h3 class="font-weight-light">The page you’re looking for was not found!</h3>
+                    {% elseif status_code == '403' %}
+                        <h3 class="font-weight-light">You don't have permission to access this page!</h3>
+                    {% else %}
+                        <h3 class="font-weight-light">Please contact the administrator!</h3>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 text-center mt-xl-2">
+                    <a class="text-white font-weight-medium"
+                    href="{{ path('index') }}">Back to home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ encore_entry_script_tags('app') }}
+</body>
+</html>

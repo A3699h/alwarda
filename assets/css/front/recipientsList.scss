@@ -1,0 +1,169 @@
+.recipientsList {
+  h4 {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    color: #343434;
+  }
+
+  h5 {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+    text-transform: uppercase;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: #343434;
+  }
+
+  h6 {
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: #828282;
+  }
+
+  .orderItem {
+    background: #F1F8F7;
+    padding: 1rem;
+  }
+
+  .cancelBtn {
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    font-family: Raleway, serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+    background: #F86140;
+    border-radius: 30.5px;
+    padding: 0.7rem 1.8rem;
+  }
+}
+
+.btnAdd {
+  border: 1px solid #95C0BC;
+  color: #95C0BC;
+  font-size: 20px;
+  font-weight: bold;
+  box-sizing: border-box;
+  border-radius: 50%;
+
+  &:hover {
+    color: #95C0BC;
+  }
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+#newRecipientModal {
+  .header {
+    padding: 0.5rem 1rem;
+    //border-bottom: 1px solid #E4E4E4;
+    position: relative;
+
+    h1 {
+      display: inline-block;
+      margin: 1rem 0 0.5rem 1rem;
+    }
+
+    button {
+      position: absolute;
+      transform: translate(-1rem, 1rem);
+      top: 0;
+      right: 0;
+      padding: 0 !important;
+      border-radius: 50% !important;
+      width: 2rem !important;
+      //height: 2rem !important;
+      border: 1px solid #343434;
+
+      span {
+        font-family: Raleway, serif;
+        padding: 0 !important;
+        line-height: 2rem !important;
+      }
+    }
+  }
+
+  .modal-body {
+
+    input, select, textarea, .eyeBtn {
+      background-color: #F1F8F7;
+      box-shadow: none;
+      font-family: Raleway, serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 25px;
+      color: #828282;
+      border-radius: 0;
+    }
+
+    input, textarea, .eyeBtn {
+      padding: 1.2rem;
+    }
+
+    .eyeBtn {
+      padding: 0;
+    }
+
+    .custom-control label {
+      font-family: Raleway, serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 25px;
+      text-decoration-line: underline;
+
+      &:before {
+        box-shadow: none;
+        color: #fff;
+        border-color: #F86140;
+        background-color: #F86140;
+        border-radius: 0
+      }
+    }
+
+    button {
+      font-family: Raleway, serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1.2rem;
+      color: #ffffff;
+      background: #F86140;
+      border-radius: 30.5px;
+      padding: 1rem 3rem;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    p {
+      font-family: Raleway, serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #828282;
+
+      a {
+        color: #F86140;
+      }
+    }
+  }
+}

@@ -1,0 +1,182 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item {% if app.session.get('activeMenu') == 'dashboard' %}active{% endif %}">
+            <a class="nav-link" href="{{ path('index') }}">
+                <span class="menu-title">Dashboard</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        {% if not is_granted('ROLE_SHOP') %}
+            <li class="nav-item {% if app.session.get('activeMenu') == 'messages' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('message_list') }}">
+                    <span class="menu-title">Messages</span>
+                    <i id="messages-link" class="fas fa-envelope-open menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') == 'blog' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('list_blogs') }}">
+                    <span class="menu-title">Blog</span>
+                    <i id="messages-link" class="fas fa-newspaper menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') in ['users','client','admin','shop', 'driver'] %}active{% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#collapseUsers" role="button"
+                   aria-expanded="{% if app.session.get('activeMenu') in ['users','client','admin','shop', 'driver'] %}true{% else %}false{% endif %}"
+                   aria-controls="collapseUsers">
+                    <span class="menu-title">Users</span>
+                    <i class="menu-arrow"></i>
+                    <i class="mdi mdi-account-multiple menu-icon"></i>
+                </a>
+                <div class="collapse{% if app.session.get('activeMenu') in ['users','client','admin','shop', 'driver'] %} show{% endif %}"
+                     id="collapseUsers">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a href="{{ path('user_index', {'role': 'all'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'users' %}active{% endif %}">ALl</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('user_index', {'role': 'client'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'client' %}active{% endif %}">Clients</a>
+                        </li>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li class="nav-item"><a href="{{ path('user_index', {'role': 'admin'}) }}"
+                                                    class="nav-link {% if app.session.get('activeMenu') == 'admin' %}active{% endif %}">Admins</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item"><a href="{{ path('user_index', {'role': 'shop'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'shop' %}active{% endif %}">Shops</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('user_index', {'role': 'driver'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'driver' %}active{% endif %}">Drivers</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') in ['privacy','colors', 'faq'] %}active{% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#collapseSettings" role="button"
+                   aria-expanded="{% if app.session.get('activeMenu') in ['privacy','colors', 'faq'] %}true{% else %}false{% endif %}"
+                   aria-controls="collapseSettings">
+                    <span class="menu-title">Settings</span>
+                    <i class="menu-arrow"></i>
+                    <i class="fas fa-cogs menu-icon"></i>
+                </a>
+                <div class="collapse{% if app.session.get('activeMenu') in ['privacy','colors', 'faq'] %} show{% endif %}"
+                     id="collapseSettings">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a href="{{ path('edit_privacy_policy') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'users' %}active{% endif %}">Privacy
+                                policies</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('edit_product_colors') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'client' %}active{% endif %}">Product
+                                colors</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('faq_index') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'faq' %}active{% endif %}">FAQs</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('dashboard_list_params') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'params' %}active{% endif %}">Parameters</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') == 'products' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('product_index') }}">
+                    <span class="menu-title">Products</span>
+                    <i class="mdi mdi-book menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') == 'categories' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('category_index') }}">
+                    <span class="menu-title">Categories</span>
+                    <i class="mdi mdi-library-books menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') == 'discountVouchers' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('discount_voucher_index') }}">
+                    <span class="menu-title">Discount vouchers</span>
+                    <i class="fas fa-ticket-alt menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') == 'areas' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('area_index') }}">
+                    <span class="menu-title">City</span>
+                    <i class="fas fa-layer-group menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') == 'slots' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('slot_index') }}">
+                    <span class="menu-title">Slots</span>
+                    <i class="fas fa-clock menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') in ['orders_all','orders_confirmed','orders_not_confirmed','orders_canceled'] %}active{% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#collapseOrders" role="button"
+                   aria-expanded="{% if app.session.get('activeMenu') in ['orders_all','orders_confirmed','orders_not_confirmed','orders_canceled'] %}true{% else %}false{% endif %}"
+                   aria-controls="collapseOrders">
+                    <span class="menu-title">Orders</span>
+                    <i class="menu-arrow"></i>
+                    <i class="fas fa-shopping-cart menu-icon"></i>
+                </a>
+                <div class="collapse{% if app.session.get('activeMenu') in ['orders_all','orders_confirmed','orders_not_confirmed','orders_canceled'] %} show{% endif %}"
+                     id="collapseOrders">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a href="{{ path('order_index', {'type': 'orders_all'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'orders_all' %}active{% endif %}">ALl</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('order_index', {'type': 'orders_confirmed'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'orders_confirmed' %}active{% endif %}">Confirmed</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('order_index', {'type': 'orders_not_confirmed'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'orders_not_confirmed' %}active{% endif %}">Not
+                                confirmed</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('order_index', {'type': 'orders_canceled'}) }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'orders_canceled' %}active{% endif %}">Canceled</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        {% endif %}
+        {% if is_granted('ROLE_SHOP') %}
+            <li class="nav-item {% if app.session.get('activeMenu') in ['availableProducts','providedProducts'] %}active{% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#collapseProducts" role="button"
+                   aria-expanded="{% if app.session.get('activeMenu') in ['availableProducts','providedProducts'] %}true{% else %}false{% endif %}"
+                   aria-controls="collapseUsers">
+                    <span class="menu-title">Products</span>
+                    <i class="menu-arrow"></i>
+                    <i class="fas fa-box-open menu-icon"></i>
+                </a>
+                <div class="collapse{% if app.session.get('activeMenu') in ['availableProducts','providedProducts'] %} show{% endif %}"
+                     id="collapseProducts">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a href="{{ path('products_for_shops') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'availableProducts' %}active{% endif %}">Available</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('shop_provided_products') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'providedProducts' %}active{% endif %}">Provided</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item {% if app.session.get('activeMenu') in ['orders','assignedOrders'] %}active{% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#collapseOrders" role="button"
+                   aria-expanded="{% if app.session.get('activeMenu') in ['orders','assignedOrders'] %}true{% else %}false{% endif %}"
+                   aria-controls="collapseOrders">
+                    <span class="menu-title">Orders</span>
+                    <i class="menu-arrow"></i>
+                    <i class="fas fa-shopping-cart menu-icon"></i>
+                </a>
+                <div class="collapse{% if app.session.get('activeMenu') in ['orders','assignedOrders'] %} show{% endif %}"
+                     id="collapseOrders">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a href="{{ path('order_index') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'orders' %}active{% endif %}">Available</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ path('shop_orders_index') }}"
+                                                class="nav-link {% if app.session.get('activeMenu') == 'assignedOrders' %}active{% endif %}">Assigned</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

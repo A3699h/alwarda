@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog articles{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Blog articles
+        </h3>
+        <a href="{{ path('add_blog_article') }}">
+            <i class="mdi mdi-book-plus text-primary icon-md"></i>
+        </a>
+    </div>
+
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Image</th>
+                        <th>Published</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for article in blogs %}
+                        <tr>
+                            <td>{{ article.title }}</td>
+                            <td>
+                                <img class="img-fluid"
+                                     src="{{ vich_uploader_asset(article, 'imageFile') }}"
+                                     style="border-radius: unset; width: 100px; height: auto; ">
+                            </td>
+                            <td>
+                                {% if article.published %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('front_blog_single', {'slug': article.slug}) }}" target="_blank">
+                                    <i class="mdi mdi-eye text-primary" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('delete_blog', {'id': article.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('edit_blog_article', {'id': article.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('product') }}
+{% endblock %}

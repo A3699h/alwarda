@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new Category{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h3 class="page-title">
+            Add new Category
+        </h3>
+    </div>
+
+    {{ include('category/_form.html.twig') }}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('categories') }}
+{% endblock %}
+

@@ -1,0 +1,47 @@
+<footer>
+    <div class="col-lg-4 col-12 h-100">
+        <h1 class="pt-5">{{ 'Contacts'|trans  }}</h1>
+        <div class="contact-section mt-5">
+            <h2>{{ 'Address'|trans  }}</h2>
+            <h3 id="paramAddr1">City</h3>
+            <h4 id="paramAddr2">Street</h4>
+        </div>
+        <div class="contact-section mt-5">
+            <h2>{{ 'Work hours'|trans  }}</h2>
+            <h3 id="paramWorkHours">9:00 - 20:00</h3>
+            <h4 id="paramWorkDays">Every day</h4>
+        </div>
+        <div class="contact-section mt-5">
+            <h2>{{ 'Call us'|trans  }}</h2>
+            <h3 id="paramPhoneNumber">+7 495 765-55-33</h3>
+        </div>
+        <div class="contact-section mt-5">
+            <h2>{{ 'Write us'|trans  }}</h2>
+            <h3 id="paramEmailAddr">dombuton@gmail.com</h3>
+        </div>
+        <div class="contact-section mt-4 pb-4">
+            <span>{{ 'Download App'|trans  }}</span>
+            <a id="paramIosLink" href="#"><img src="{{ asset('build/front/apple-icon.svg') }}" alt="apple icon"></a>
+            <a id="paramAndroidLink" href="#"><img src="{{ asset('build/front/android-icon.svg') }}" alt="android icon"></a>
+        </div>
+    </div>
+</footer>
+{% if app.request.locale == 'ar' %}
+    <style>
+        footer>div {
+            direction: rtl;
+            text-align: right;
+            max-width: 100%;
+            right: 5%;
+        
+        }
+        footer {
+            background: url('http://iwoztla.cluster031.hosting.ovh.net/build/images/car-footer.b0aa3330_rtl.png') no-repeat 100% 100%,linear-gradient(0deg,#f1f8f7,#f1f8f7 71%,#fff);
+            background-size: 100%;
+            direction: rtl;
+        }
+        {# in the mobile #}
+        
+    </style>
+{% endif %}
+

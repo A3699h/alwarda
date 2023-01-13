@@ -1,0 +1,68 @@
+{% import _self as formMacros %}
+{% macro printSubAreasRow(SubAreasForm) %}
+    <td>{{ form_widget(SubAreasForm.nameEn) }}</td>
+    <td>{{ form_widget(SubAreasForm.nameAr) }}</td>
+    <td>{{ form_widget(SubAreasForm.price) }}</td>
+    <td>{{ form_widget(SubAreasForm.active) }}</td>
+    <td>
+        <button type="button" class="btn delete_subArea_row">
+            <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+        </button>
+    </td>
+{% endmacro %}
+
+{{ form_start(form) }}
+<div class="d-flex flex-column ">
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name (English)</th>
+                        <th>Name (Arabic)</th>
+                        <th>Delivery price (SAR)</th>
+                        <th>Map name</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ form_widget(form.nameEn) }}</td>
+                        <td>{{ form_widget(form.nameAr) }}</td>
+                        <td>{{ form_widget(form.deliveryPrice) }}</td>
+                        <td>{{ form_widget(form.mapName) }}</td>
+                        <td>{{ form_widget(form.active) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="w-100 d-flex justify-content-center ">
+    <div class="card col-lg-11 mt-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-around flex-wrap">
+                <button class="btn btn-primary ">{{ button_label|default('Save') }}</button>
+                {% if form.vars.value.id is not null %}
+                    <a href="{{ path('area_delete', {id:form.vars.value.id}) }}"
+                       class="btn btn-danger ">Delete</a>
+                    <a href="{{ path('area_show', {id:form.vars.value.id}) }}"
+                       class="btn btn-info ">View</a>
+                {% endif %}
+                <a href="{{ path('area_index') }}" class="btn btn-light ">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('area_form') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('area_form') }}
+{% endblock %}

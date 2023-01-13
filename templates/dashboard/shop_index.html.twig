@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute"
+                         alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Orders
+                        <i class="fas fa-shopping-cart  mdi-24px float-right"></i>
+                    </h4>
+                    <table class="table table-borderless text-white">
+                        <tbody>
+                        <tr>
+                            <th>Total</th>
+                            <td>{{ data['orders']['total'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>This week</th>
+                            <td>{{ data['orders']['week'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>This Month</th>
+                            <td>{{ data['orders']['month'] }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute"
+                         alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Average Sales (SAR)
+                        <i class="fas fa-money-bill mdi-24px float-right"></i>
+                    </h4>
+                    <table class="table table-borderless text-white">
+                        <tbody>
+                        <tr>
+                            <td>Total</td>
+                            <td>{{ data['avgSales']['total']|round(2,'floor') }}</td>
+                        </tr>
+                        <tr>
+                            <td>This week</td>
+                            <td>{{ data['avgSales']['week']|round(2,'floor') }}</td>
+                        </tr>
+                        <tr>
+                            <td>This month</td>
+                            <td>{{ data['avgSales']['month']|round(2,'floor') }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Products
+                        <i class="mdi mdi-book mdi-24px float-right"></i>
+                    </h4>
+                    <h2>{{ data['nbProducts'] }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{{ asset('build/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">Total Income
+                        <i class="fas fa-money-bill-wave mdi-24px float-right"></i>
+                    </h4>
+                    <h2>{{ data['totalIncome']|round(2,'floor') }} SAR</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-around mb-3 flex-wrap">
+                <button id="weekChart" class="btn btn-primary mb-1">Orders / Week</button>
+                <button id="monthChart" class="btn btn-danger mb-1">Orders / Month</button>
+                <button id="yearChart" class="btn btn-info mb-1">Orders / Year</button>
+            </div>
+            <canvas id="ordersChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card mt-3" style="min-height: 100%">
+        <div class="card-body">
+            <div class="card-title mt-3 text-info">
+                Mt Orders
+                <hr>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>REF</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Delivery Date</th>
+                        <th>Driver</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.reference }}</td>
+                            <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                            <td>{{ order.client.fullName }}</td>
+                            <td>{{ order.deliveryDate|date('d/m/Y') }} {{ order.deliverySlot.deliveryAt|date('ga') }}
+                                - {{ order.deliverySlot.deliveryTo|date('ga') }}
+                            </td>
+                            <td>{{ order.driver.fullName ?? '' }}</td>
+                            <td>{{ order.status|capitalize }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        data = {{ chartData|raw }};
+
+        monthData = generateChartData(data, 'orders', 'month', 'rgba(254, 86, 120, 1)');
+        weekData = generateChartData(data, 'orders', 'week', 'rgba(182, 109, 255, 1)');
+        yearData = generateChartData(data, 'orders', 'year', 'rgba(21, 117, 193, 1)');
+        chartData = weekData;
+
+        document.getElementById('weekChart').addEventListener('click', function () {
+            ordersChart.data = weekData;
+            ordersChart.update();
+        });
+        document.getElementById('monthChart').addEventListener('click', function () {
+            ordersChart.data = monthData;
+            ordersChart.update();
+        });
+        document.getElementById('yearChart').addEventListener('click', function () {
+            ordersChart.data = yearData;
+            ordersChart.update();
+        });
+
+        let ctx = document.getElementById('ordersChart');
+        let chartConfig = {
+            type: 'line',
+            data: null,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        };
+
+        let ordersChart = new Chart(ctx, chartConfig);
+
+        ordersChart.data = weekData;
+        ordersChart.update();
+
+        function generateChartData(data, type, acc, color) {
+            return {
+                labels: Object.keys(data[acc][type]),
+                datasets: [{
+                    backgroundColor: color,
+                    borderColor: color,
+                    label: `New orders this ${acc}`,
+                    fill: true,
+                    lineTension: 0,
+                    data: Object.values(data[acc][type])
+                }]
+            };
+        }
+    </script>
+{% endblock %}

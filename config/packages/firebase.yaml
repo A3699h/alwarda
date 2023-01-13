@@ -1,0 +1,5 @@
+kreait_firebase:
+  projects:
+    Alwarda:
+      credentials: '%kernel.project_dir%/config/alwarda_credentials.json'
+      default: true

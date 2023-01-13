@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FAQ index{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
+    <div class="page-header">
+        <h3 class="page-title">
+            FAQs list
+        </h3>
+        <button id="modal-slot"
+                style="padding: 0;"
+                type="button"
+                class="btn"
+                data-toggle="modal"
+                data-target="#modalSlot">
+            <i class="fas fa-plus-circle text-primary" style="font-size: 1.5rem"></i>
+        </button>
+    </div>
+
+
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for faq in faqs %}
+                        <tr>
+                            <td>{{ faq.question }}</td>
+                            <td>{{ faq.answer }}</td>
+                            <td>
+                                <a href="{{ path('faq_delete', {'id': faq.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('faq_edit', {'id': faq.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2">No records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSlot" tabindex="-1" role="dialog"
+         aria-labelledby="modalSlotTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSlotTitle">Add a new section</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-column">
+                    {{ form_row(form.question) }}
+                    {{ form_row(form.questionAr) }}
+                    {{ form_row(form.answer) }}
+                    {{ form_row(form.answerAr) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="submit-inventory" type="submit" class="btn btn-primary">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

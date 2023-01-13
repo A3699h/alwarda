@@ -1,0 +1,70 @@
+{% extends 'front/base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('recipientsList') }}
+    <script>
+        let formInvalid = {{ formInvalid|default(0) }}
+    </script>
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('recipientsList') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container col-lg-7 custom_breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb pl-0">
+                <li class="breadcrumb-item"><a href="{{ path('front_index') }}">{{ 'Home'|trans  }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('front_profile') }}">{{ 'Personnal Account'|trans  }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'Recipients List'|trans  }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="header-section d-lg-block d-flex flex-column justify-content-between align-items-start container col-lg-9 offset-lg-2">
+        <h1 class="big-title">{{ 'Recipients List'|trans  }}</h1>
+        <div class="d-flex col-12 justify-content-end">
+            <button class="btn btnAdd" type="button" data-toggle="modal" data-target="#newRecipientModal">+</button>
+        </div>
+        <div class="recipientsList d-flex flex-column mt-5 col-12">
+            {% for address in app.user.deliveryAddresses %}
+                {% if address.active %}
+                    <div class="orderItem d-flex col-12 align-items-center">
+                        <div class="flex-fill">
+                            <h4>{{ address.recieverName|default('') }}</h4>
+                            <h5>{{ address.recieverFullAddress|default('') }} - {{ (app.request.locale =='en' ? address.recieverArea.nameEn : address.recieverArea.nameAr)  |default('') }}</h5>
+                            <h6>{{ address.recieverPhone|default('') }}</h6>
+                        </div>
+                        <div class="">
+                            <a href="{{ path('front_delete_delivery_address', {'id': address.id}) }}" class="btn cancelBtn col-12">{{ 'Delete'|trans  }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    <div id="newRecipientModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="header">
+                    <h1 class="big-title w-100 text-center">{{ 'New Recipient'|trans  }}</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-5 col-12 col-md-10 container d-flex flex-column justify-content-around">
+                    {{ form(form) }}
+                    <div class="text-center mt-5">
+                        <button class="btn submitBtn">{{ 'Add'|trans  }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

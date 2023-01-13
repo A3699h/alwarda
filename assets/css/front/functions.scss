@@ -1,0 +1,4 @@
+
+@function appGetWidth($width) {
+  @return $width/1920*100vw;
+}

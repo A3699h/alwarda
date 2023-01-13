@@ -1,0 +1,64 @@
+{% extends 'front/base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('manageOrders') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('manageOrders') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container col-lg-7 custom_breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb pl-0">
+                <li class="breadcrumb-item"><a href="{{ path('front_index') }}">{{ 'Home'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('front_profile') }}">{{ 'Personnal Account'|trans }}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'Manage Orders'|trans }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="header-section d-lg-block d-flex flex-column justify-content-between align-items-start container col-lg-9 offset-lg-2">
+        <h1 class="big-title">{{ 'Manage Orders'|trans }}</h1>
+        <div class="ordersChoice d-flex mt-4">
+            <a href="{{ path('front_manage_orders', {'status': 'current'}) }}"
+               class="btn {% if status == 'current' %}active{% endif %} mr-3">{{ 'Current Orders'|trans }}</a>
+            <a href="{{ path('front_manage_orders', {'status': 'previous'}) }}"
+               class="btn {% if status == 'previous' %}active{% endif %}">{{ 'Previous Orders'|trans }}</a>
+        </div>
+        <div class="ordersSection d-flex flex-column mt-4">
+            {% for order in orders|reverse %}
+                <div class="orderItem d-flex flex-wrap align-items-center">
+                    <div class="col-2">
+                        <img class="w-100"
+                             src="{{ vich_uploader_asset(order.orderDetails[0].product.images[0],'imageFile') }}"
+                             alt="">
+                    </div>
+                    <div class="col-6">
+                        <h4>{{ order.messageTo }}</h4>
+                        <h5># {{ order.reference }}</h5>
+                        <h6>{{ order.orderDetails|length }} {% if order.orderDetails|length == 1 %}{{ 'item'|trans }} {% else %} {{ 'items'|trans }}{% endif %}</h6>
+                    </div>
+                    <div class="col-4 d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center">
+                        <button data-order-id="{{ order.id }}"
+                                class="btn trackBtn col-lg-6 col-12 mr-lg-1 mb-1 mb-lg-0">
+                            {% if app.request.locale == 'en' %}
+                                {{ 'Track'|trans }} <span class="d-none d-lg-inline-block"> {{ 'Order'|trans }}</span>
+                            {% else %}
+                                {{ 'Order'|trans }} <span class="d-none d-lg-inline-block"> {{ 'Track'|trans }}</span>
+                            {% endif %}
+
+                        </button>
+                        {% if order.customStatusCode == 0 %}
+                            <button data-order-id="{{ order.id }}"
+                                    class="btn cancelBtn col-lg-6 col-12 ml-lg-1 mt-1 mt-lg-0">{{ 'Cancel'|trans }}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+

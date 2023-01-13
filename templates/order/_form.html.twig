@@ -1,0 +1,200 @@
+{% import _self as formMacros %}
+{% macro printOrderDetailsRow(OrderDetailsForm) %}
+    <td>{{ form_widget(OrderDetailsForm.product) }}</td>
+    <td>{{ form_widget(OrderDetailsForm.quantity) }}</td>
+    <td>
+        <button type="button" class="btn delete-order-detail-row" style="padding: 0;">
+            <i class="mdi mdi-delete text-danger" style="font-size: 1.5rem"></i>
+        </button>
+    </td>
+{% endmacro %}
+
+{{ form_start(form) }}
+
+<div class="d-flex flex-column ">
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Order informations
+                    <hr>
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_row(form.deliveryDate) }}
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_row(form.deliverySlot) }}
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_row(form.status) }}
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_row(form.client) }}
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_row(form.deliveryAddress) }}
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        {{ form_row(form.shop) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Billing informations
+                    <hr>
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class=" col-md-6 col-sm-12">
+                        {{ form_row(form.paymentDate) }}
+                    </div>
+                    <div class=" col-md-6 col-sm-12">
+                        {{ form_row(form.paymentStatus) }}
+                    </div>
+                    <div class=" col-md-6 col-sm-12">
+                        {{ form_row(form.paymentMethod) }}
+                    </div>
+                    <div class=" col-md-6 col-sm-12">
+                        {{ form_row(form.VAT) }}
+                    </div>
+                    <div class=" col-md-6 col-sm-12">
+                        {{ form_row(form.discountVoucher) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Greetings informations
+                    <hr>
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="col-md-6 col-sm-12">
+                        {{ form_row(form.messageFrom) }}
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        {{ form_row(form.messageTo) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.messageLink) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.message) }}
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        {{ form_row(form.messageFile) }}
+                    </div>
+                    <div class="d-flex align-items-center col-md-6 col-sm-12">
+                        {{ form_row(form.hideSender) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Cart informations
+                    <hr>
+                </div>
+                <div class="table-responsive">
+                    <table class="table order-details-table"
+                           data-prototype="{{ formMacros.printOrderDetailsRow(form.orderDetails.vars.prototype)|e('html_attr') }}">
+                        <thead>
+                        <tr>
+                            <th style="width: 70%;">Product</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for detail in form.orderDetails %}
+                            <tr>
+                                <td>{{ form_widget(detail.product) }}</td>
+                                <td>{{ form_widget(detail.quantity) }}</td>
+                                <td>
+                                    <button type="button" class="btn delete-order-detail-row" style="padding: 0;">
+                                        <i class="mdi mdi-delete text-danger" style="font-size: 1.5rem"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Add a note
+                    <hr>
+                </div>
+                <div>
+                    {% for note in form.notes|reverse %}
+                        {% if note.vars.value.id %}
+                            <div style="display: none"> {{ form_widget(note.note) }}</div>
+                            <div class="col-12">
+                                <h6>{{ note.vars.value.createdAt|date('d M Y H:i') }} By :{{ note.vars.value.user.fullname }} </h6>
+                                <p class="ml-3 text-justify">{{ note.vars.value.note }}</p>
+                            </div>
+                            <hr>
+                        {% else %}
+                            <div class="col-12">
+                                {{ form_widget(note.note) }}
+                            </div>
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-around flex-wrap">
+                    <button class="btn btn-primary ">{{ button_label|default('Save') }}</button>
+                    {% if form.vars.value.id is not null %}
+                        <a href="{{ path('order_delete', {id:form.vars.value.id}) }}"
+                           class="btn btn-danger ">Delete</a>
+                        <a href="{{ path('order_show', {id:form.vars.value.id}) }}"
+                           class="btn btn-info ">View</a>
+                    {% else %}
+                        <input type="hidden" id="willView" name="willView" value="0">
+                        <button id="save_view_btn" class="btn btn-info ">Save & View</button>
+                    {% endif %}
+                    <a href="{{ path('order_index') }}" class="btn btn-light ">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{ form_end(form) }}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('order_form') }}
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+{% endblock %}

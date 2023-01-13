@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Application parameters{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Parameters
+        </h3>
+    </div>
+
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for param in params %}
+                        <tr>
+                            <td>{{ param.name }}</td>
+                            <td>{{ param.value }}</td>
+                            <td>
+                                <a class="editParam"
+                                   data-id="{{ param.id }}"
+                                   data-name="{{ param.name }}"
+                                   data-value="{{ param.value }}"
+                                   href="#">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditParam" tabindex="-1" role="dialog"
+         aria-labelledby="modalEditParamTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditParamTitle">Edit parameter value</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="paramId" value="">
+                    <h4><span id="paramName">Name</span></h4>
+                    <div class="form-group mt-4">
+                        <label for="paramValue">Parameter Value</label>
+                        <input class="form-control"
+                               type="text"
+                               name="paramValue"
+                               id="paramValue"
+                               value="test">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="#"
+                       id="submitEditParam" class="btn btn-primary">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('params') }}
+{% endblock %}

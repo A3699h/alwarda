@@ -1,0 +1,66 @@
+{% extends 'front/base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('blogSingle') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('blogSingle') }}
+{% endblock %}
+
+{% block body %}
+    {% if app.request.locale == 'ar' %}
+        <style>
+            .custom_breadcrumb, .header-section {
+                direction: rtl;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                text-align: right;
+            }
+            p{
+                text-align: right;
+            }
+
+        </style>
+    {% endif %}
+    <div class="container col-lg-7 custom_breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb pl-0">
+                <li class="breadcrumb-item"><a href="{{ path('front_index') }}">{{ 'Home'|trans  }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('front_blog_list') }}">{{ 'Blog'|trans  }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ app.request.locale =="en" ? article.title : article.titleAr }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="header-section d-lg-block d-flex flex-column justify-content-between align-items-start container col-lg-9 offset-lg-2">
+        <h1 class="big-title">{{ app.request.locale =="en" ? article.title : article.titleAr }}</h1>
+        <div class="blogSection mt-4 d-flex flex-column">
+            <div class="blogImage mb-5 col-12 d-block d-md-none">
+                <img class="w-100" src="{{ vich_uploader_asset(article,'imageFile') }}" alt="">
+            </div>
+            {% for section in article.sections %}
+                {% if loop.index is odd %}
+                    <div class="row blogBlock mt-5 d-flex align-items-center">
+                        <div class="blogImage col-lg-6 col-12 d-none d-md-inline-block">
+                            <img class="w-100" src="{{ vich_uploader_asset(section,'imageFile') }}" alt="">
+                        </div>
+                        <div class="blogText mt-md-4 col-lg-6 col-12">
+                            <p>{{ app.request.locale =="en" ? section.content : section.contentAr }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row blogBlock mt-5 d-flex align-items-center">
+                        <div class="blogText col-lg-6 col-12">
+                            <p>{{ app.request.locale =="en" ? section.content : section.contentAr }}</p>
+                        </div>
+                        <div class="blogImage col-lg-6 col-12 d-none d-md-inline-block">
+                            <img class="w-100" src="{{ vich_uploader_asset(section,'imageFile') }}"
+                                 alt="">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+

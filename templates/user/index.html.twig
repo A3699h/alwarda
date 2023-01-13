@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List users{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            {% if app.session.get('activeMenu') == 'users' %}
+                All users
+            {% else %}
+                {{ app.session.get('activeMenu')|capitalize }}s
+            {% endif %}
+        </h3>
+        {% if title in ['admin', 'client', 'shop'] %}
+            <a href="{{ path('user_new', {role: title}) }}">
+                <i class="mdi mdi-account-plus text-primary icon-md"></i>
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Active</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.fullName }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td>
+                                {% if 'ROLE_SUPER_ADMIN' in user.roles %}
+                                    Super admin
+                                {% elseif 'ROLE_ADMIN' in user.roles %}
+                                    Admin
+                                {% elseif 'ROLE_SHOP' in user.roles %}
+                                    Shop
+                                {% elseif 'ROLE_DRIVER' in user.roles %}
+                                    Driver
+                                {% else %}
+                                    Client
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input {{ user.active == '1' ? 'checked' : '' }}
+                                            type="checkbox" class="custom-control-input"
+                                            id="customSwitch{{ loop.index }}">
+                                    <label data-id-user="{{ user.id }}"
+                                           class="custom-control-label user-toggle-active-switch"
+                                           for="customSwitch{{ loop.index }}"></label>
+                                </div>
+                            </td>
+                            <td>
+                                {% if user.role in ['ROLE_SHOP', 'ROLE_CLIENT'] %}
+                                    <a href="{{ path('user_show', {'id': user.id}) }}">
+                                        <i class="mdi mdi-eye text-primary" style="font-size: 1.3rem"></i>
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('user_delete', {'id': user.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('user_edit', {'id': user.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('user') }}
+{% endblock %}

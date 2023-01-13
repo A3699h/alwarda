@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Products
+        </h3>
+        <a href="{{ path('product_new') }}">
+            <i class="mdi mdi-book-plus text-primary icon-md"></i>
+        </a>
+    </div>
+
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Cost</th>
+                        <th>Profit</th>
+                        <th>Orders</th>
+                        <th>Views</th>
+                        <th>Stock</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.SKU }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>
+                                <img class="img-fluid"
+                                     src="
+                                {% if product.images|length > 0 %}
+                                    {{ vich_uploader_asset(product.images[0], 'imageFile') }}
+                                {% else %}
+                                    {{ asset('build/dashboard/no_image.png') }}
+                                {% endif %}
+                                " style="border-radius: unset; width: 100px; height: auto; ">
+                            </td>
+                            <td>{{ product.category.name }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.cost }}</td>
+                            <td>{{ product.benefit }}</td>
+                            <td>orders</td>
+                            <td>{{ product.views }}</td>
+                            <td>
+                                {% if product.users|length > 0 %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('product_show', {'id': product.id}) }}">
+                                    <i class="mdi mdi-eye text-primary" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('product_delete', {'id': product.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('product_edit', {'id': product.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('product') }}
+{% endblock %}

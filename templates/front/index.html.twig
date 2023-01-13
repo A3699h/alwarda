@@ -1,0 +1,347 @@
+{% extends 'front/base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('frontIndex') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('frontIndex') }}
+{% endblock %}
+
+
+{% block body %}
+    {% if app.request.locale == 'ar' %}
+    <style>
+        #homeSection, #catalogSection, #categoriesSection, #adsSection, #faqSection, #deliverySection, #catedoriesSectionMobile {
+            direction: rtl;
+        }
+        h1, h2, h3, h4, h5, h6, p {
+            text-align: right;
+        }
+        #adsSection .image-right {
+            background-position: 0%;
+        }
+        #adsSection .image-left {
+            background-position: 100%;
+        }
+        #deliverySection {
+            background: url('http://iwoztla.cluster031.hosting.ovh.net/build/images/delivery-section-bg.cd32ecba_rtl.png');
+            background-size: 100%;
+            background-color: var(--blue-color);
+        }
+        #deliverySection .card-background {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(99%,-20%);
+        }
+        @media only screen and (max-width: 992px) {
+            #deliverySection {
+                background: none;
+            }
+        }
+        @media only screen and (max-width: 992px) {
+            #deliverySection .card-background {
+                transform: translate(99%,20%);
+            }
+        }
+        
+        
+    </style>
+{% endif %}
+    <section id="homeSection" class="container-fluid d-flex flex-lg-row flex-column">
+        <div id="homeSectionTextSection"
+             class="col-12 col-lg-6 bg-success2 d-flex flex-column justify-content-center align-items-center">
+            <div class="top-section flex-fill d-flex flex-column justify-content-start justify-content-lg-center">
+                <h1>{{ 'We deliver flowers'|trans  }} <br>
+                    {{ 'Countrywide'|trans  }}
+                </h1>
+                <h2>{{ 'Is your mom or girlfriend in another city?'|trans  }} <br>
+                    {{ 'We have collected couriers all over Saudi Arabia.'|trans  }}
+                </h2>
+                <div class="catalogLinkContainer">
+                    <a href="{{ path('front_catalog') }}"
+                       class="catalogLink d-flex justify-content-center align-items-center">
+                        <img src="{{ asset('build/front/flower.svg') }}" alt="flower icon" class="mr-3">
+                        {{ 'Catalog'|trans  }}
+                        <span class="right-arrow">
+                            <img src="{{ asset('build/front/right-arrow.svg') }}" alt="right arrow icon">
+                        </span>
+                    </a>
+                </div>
+                <div>
+                    <img class="w-100 d-block d-lg-none" src="{{ asset('build/front/car1.png') }}" alt="car">
+                </div>
+            </div>
+            <div class="bottom-section mb-3">
+                <span>{{ 'Download App'|trans  }}</span>
+                <a id="paramIosLinkTop" href="#"><img src="{{ asset('build/front/apple-icon.svg') }}" alt="apple icon"></a>
+                <a id="paramAndroidLinkTop" href="#"><img src="{{ asset('build/front/android-icon.svg') }}" alt="android icon"></a>
+            </div>
+        </div>
+        <div id="homeSectionCarSection" class="col-6 d-none d-lg-block">
+            <div class="carContainer">
+                <img src="{{ asset('build/front/car1.png') }}" alt="car">
+            </div>
+        </div>
+    </section>
+    <section id="catalogSection" class="container col-lg-8 col-12">
+        <div class="header d-flex mb-4 justify-content-between align-items-center">
+            <h1>{{ 'Catalog'|trans  }}</h1>
+            <ul class="list-unstyled d-lg-flex d-none">
+                {% for category in categories %}
+
+                    <li>
+			
+                        <button data-value="{{ category.name }}"
+                                data-category-id="{{ category.id }}"
+                                class="btn {{ loop.index == 1 ? 'active' }}">
+                            {{ app.request.locale == 'en' ? category.name : category.nameAr }}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+            <select class="d-block d-lg-none" name="catalogSelect" id="catalogSelect">
+                {% for category in categories %}
+                    <option {{ loop.index == 1 ? 'selected' }}
+                            value="{{ category.id }}">{{ app.request.locale == 'en' ? category.name : category.nameAr}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="body d-flex"
+             data-cart-icon="{{ asset('build/front/cart-white.svg') }}"
+             data-heart-icon="{{ asset('build/front/heart.svg') }}">
+            {# products go here via JS #}
+        </div>
+        <div class="footer d-flex justify-content-center align-items-center mt-5 pt-5">
+            <a class="openCatalog" href="">
+                <span>
+                    {{ 'View entire catalog'|trans  }}
+                <span class="right-arrow">
+                    <img src="{{ asset('build/front/right-arrow.svg') }}" alt="right arrow icon">
+               </span>
+                </span>
+            </a>
+        </div>
+    </section>
+    <div class="container col-lg-8 d-none d-lg-block" id="categoriesSection">
+        <div class="row">
+            <div class="col-4 text-center bg-category">
+                <img class="val-cat-img" src="{{ asset('build/front/flowers-valentine.png') }}"
+                     alt="valentines day categoory icon">
+            </div>
+            <div class="text-section col-8 d-flex flex-column justify-content-center align-items-center">
+                <h1>
+                    Flowers
+                    <br>
+                    <span>Valentine's day</span>
+                </h1>
+                <div class="categoryBtn text-justify mt-5">
+                    <a class="btn" href="#">
+                        Watch
+                        <span class="right-arrow">
+                            <img src="{{ asset('build/front/right-arrow.svg') }}" alt="right arrow icon">
+                       </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-section col-8 d-flex flex-column justify-content-center align-items-center">
+                <h1 class="text-right">
+                    Flowers
+                    <br>
+                    <span>Happy Birthday</span>
+                </h1>
+                <div class="categoryBtn right-align text-justify mt-5">
+                    <a class="btn" href="#">
+                        Watch
+                        <span class="right-arrow">
+                            <img src="{{ asset('build/front/right-arrow.svg') }}" alt="right arrow icon">
+                       </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-4 text-center bg-category p-0">
+                <img class="val-cat-img" src="{{ asset('build/front/flowers-birthday.png') }}"
+                     alt="valentines day categoory icon">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid col-12 d-lg-none " id="catedoriesSectionMobile">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="d-flex h-100">
+                        <div class="text-section col-6 d-flex flex-column justify-content-center align-items-center">
+                            <h1>
+                                Flowers
+                                <br>
+                                <span>Valentine's day</span>
+                            </h1>
+                            <div class="categoryBtn mt-5">
+                                <a class="btn" href="#">
+                                    Watch
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6  d-flex justify-content-end align-items-end">
+                            <img class="img-fluid w-75" src="{{ app.request.locale == 'en' ? asset('build/front/flowers-valentine.png') : 'http://iwoztla.cluster031.hosting.ovh.net/build/front/flowers-valentine.fc25d2be_rtl.png' }}"
+                                 alt="valentine's day flowers image">
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item ">
+                    <div class="d-flex h-100">
+
+                        <div class="text-section col-6 d-flex flex-column justify-content-center align-items-center">
+                            <h1>
+                                Flowers
+                                <br>
+                                <span>Happy Birthday</span>
+                            </h1>
+                            <div class="categoryBtn mt-5">
+                                <a class="btn" href="#">
+                                    Watch
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6 p-0 d-flex justify-content-end align-items-end">
+                            <img class="w-75" src="{{ app.request.locale == 'en' ? asset('build/front/flowers-birthday.png') : 'http://iwoztla.cluster031.hosting.ovh.net/build/front/flowers-birthday.274cfb98_rtl.png' }}"
+                                 alt="happy birthday flowers image">
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex h-100">
+                        <div class="text-section col-6 d-flex flex-column justify-content-center align-items-center">
+                            <h1>
+                                Flowers
+                                <br>
+                                <span>New Born</span>
+                            </h1>
+                            <div class="categoryBtn mt-5">
+                                <a class="btn" href="#">
+                                    Watch
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6 p-0 d-flex justify-content-end align-items-end">
+                            <img class="w-75" src="{{ app.request.locale == 'en' ? asset('build/front/flowers-birthday.png') : 'http://iwoztla.cluster031.hosting.ovh.net/build/front/flowers-birthday.274cfb98_rtl.png' }}"
+                                 alt="valentine's day flowers image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid col-12 col-lg-11" id="adsSection">
+        <div class="image-right">
+            <div class="d-flex flex-column col-12 col-lg-7 justify-content-between">
+                <h1>{{ 'From the bottom of the heart'|trans  }} <br>
+                    {{ 'all over the country'|trans  }}
+                </h1>
+                <p>
+                    Наша цель — сделать счастливыми ваших близких. Для этого, Dom Buton собрал опытных флористов в
+                    каждом уголке страны, наладил транспортную связь, и готов радовать отличным сервисом своих клиентов
+                </p>
+                <div class="d-flex flex-column flex-lg-row align-items-center">
+                    <div class="ads-icon d-flex col-3 justify-content-center align-items-center">
+                        <div>
+                            <img src="{{ asset('build/front/delivery-icon.png') }}" alt="delivery icon">
+                        </div>
+                        <h4>
+                            Доставка за 3 часа
+                        </h4>
+                    </div>
+                    <div class="ads-icon d-flex col-3 justify-content-center align-items-center">
+                        <div>
+                            <img src="{{ asset('build/front/flowers-icon.png') }}" alt="delivery icon">
+                        </div>
+                        <h4>
+                            Доставка за 3 часа
+                        </h4>
+                    </div>
+                    <div class="ads-icon d-flex col-3 justify-content-center align-items-center">
+                        <div>
+                            <img src="{{ asset('build/front/voucher-icon.png') }}" alt="delivery icon">
+                        </div>
+                        <h4>
+                            Доставка за 3 часа
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="image-left d-lg-flex d-none justify-content-end">
+            <div class="d-flex flex-column col-5 justify-content-center align-items-center">
+                <h1>{{ 'Collect your bouquet'|trans  }}</h1>
+                <p class="mt-4 mb-4">Не нашли подходящий букет? Вы можете собрать букет на свой вкус в нашем
+                    Конструкторе букетов</p>
+                <h2>Совет</h2>
+                <p> Отлично смотрятся цветы в сочетании с зеленью, оформленные в крафтовую бумагу</p>
+                <div class="categoryBtn text-justify mt-5">
+                    <a class="btn" href="#">
+                        Конструктор букетов
+                        <span class="right-arrow">
+                            <img src="{{ asset('build/front/right-arrow.svg') }}" alt="right arrow icon">
+                       </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container col-12 col-lg-8" id="faqSection">
+        <div class="header">
+            <h1>{{ 'Have a question?'|trans  }}</h1>
+            <h1>{{ "There's an answer!"|trans  }}</h1>
+        </div>
+        <div class="body mt-5 d-flex flex-wrap">
+            {% for faq in faqs %}
+                <div class="question mt-2 col-lg-4 col-12">
+                    <button class="btn col-12" type="button" data-toggle="collapse" data-target="#faq_{{ loop.index }}"
+                            aria-expanded="false" aria-controls="faq_{{ loop.index }}">
+                        {{ app.request.locale == 'en' ?  faq.question : faq.questionAr }}
+                        <span><img src="{{ asset('build/front/arrow-down.svg') }}" alt="arrow down icon"></span>
+                    </button>
+                    <div class="collapsedPart collapse" id="faq_{{ loop.index }}">
+                        <div class="card card-body">
+                            {{ app.request.locale == 'en' ?  faq.answer : faq.answerAr }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container col-12 col-lg-8 pt-5 pb-5" id="deliverySection">
+        <div class="mt-5 ml-lg-5 col-12 col-lg-6">
+            <h1>{{ 'Payment and delivery'|trans  }}</h1>
+            <h2 class="col-lg-9 col-12 ml-lg-4 pr-lg-0 text-justify">{{ 'You can choose the most convenient way for yourself payment for the order We made the checkout process as fast, convenient and safe as possible'|trans  }}.</h2>
+        </div>
+        <div class="mt-5 ml-5 pl-4 position-relative col-lg-6 col-12">
+            <div class="card-background"><img src="{{ asset('build/front/card-payment-icon.png') }}"
+                                              alt="card payments icon"></div>
+            <h3>{{ 'Bank Card'|trans  }}</h3>
+            <p class=" d-none d-lg-block">-3% скидка при оплате онлайн</p>
+            <div class=" d-none d-lg-block">
+                <img src="{{ asset('build/front/visa-icon.png') }}" alt="visa icon">
+                <img src="{{ asset('build/front/master-card-icon.png') }}" alt="master card icon">
+                <img src="{{ asset('build/front/paypal-icon.png') }}" alt="paypal icon">
+            </div>
+        </div>
+        <div class="mt-5 ml-5 pl-4 position-relative col-lg-6 col-12">
+            <div class="card-background"><img src="{{ asset('build/front/money-payment-icon.png') }}"
+                                              alt="money payments icon"></div>
+            <h3>{{ 'Online / Apple pay'|trans  }}</h3>
+            <p class=" d-none d-lg-block">Вы можете оплатить наличными курьеру при получении букета, или бесплатно
+                вызвать курьера на другой адрес
+                для оплаты подарочного букета</p>
+        </div>
+    </div>
+
+    {% include 'front/_modalSingleProduct.html.twig' %}
+{% endblock %}

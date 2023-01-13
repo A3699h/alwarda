@@ -1,0 +1,400 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order details{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Order details : {{ order.reference }} :
+            {% if(order.status == 'new') %}
+                {% if order.shop is null %}
+                    <div style="font-size:1.2rem;" class="badge badge-warning">
+                        New
+                    </div>
+                {% else %}
+                    <div style="font-size:1.2rem;" class="badge badge-primary">
+                        Assigned to {{ order.shop.fullName }}
+                    </div>
+                {% endif %}
+            {% elseif(order.status == 'shipped') %}
+                <div style="font-size:1.2rem;" class="badge badge-info">
+                    Delivering
+                </div>
+            {% elseif(order.status == 'delivered') %}
+                <div style="font-size:1.2rem;" class="badge badge-success">
+                    Delivered by {{ order.driver.fullName|default('') }}
+                </div>
+            {% elseif(order.status == 'canceled') %}
+                <div style="font-size:1.2rem;" class="badge badge-danger">
+                    Canceled
+                </div>
+            {% endif %}
+        </h3>
+    </div>
+
+    <div class="d-flex flex-column ">
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        General Informations
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th>Client</th>
+                                <td>{{ order.client.fullName }}</td>
+                            </tr>
+                            <tr>
+                                <th>Order Date</th>
+                                <td>{{ order.createdAt|date('d M Y H:i') }}</td>
+                            </tr>
+                            {% if not is_granted('ROLE_SHOP') %}
+                                <tr>
+                                    <th>Order Origin</th>
+                                    <td>{{ order.orderOrigin|capitalize }}</td>
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <th>Florist</th>
+                                <td>{{ order.shop.fullName ?? 'Not assigned yet' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Shipper</th>
+                                <td>{{ order.driver.fullName ?? 'Not assigned yet' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Delivery informations
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th>Delivery Date</th>
+                                <td>{{ order.deliveryDate|date('d M Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Delivery Slot</th>
+                                <td>{{ order.deliverySlot.deliveryAt|date('ga') }}
+                                    -> {{ order.deliverySlot.deliveryTo|date('ga') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Reciever Name</th>
+                                <td>{{ order.deliveryAddress.recieverName }}</td>
+                            </tr>
+                            <tr>
+                                <th>Reciever Phone Number</th>
+                                <td>{{ order.deliveryAddress.recieverPhone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Reciever Full Address</th>
+                                <td>{{ order.DeliveryAddress.recieverFullAddress }}</td>
+                            </tr>
+                            {% if not is_granted('ROLE_SHOP') %}
+                                <tr>
+                                    <th>Reciever City</th>
+                                    <td>
+                                        <a target="_blank"
+                                           href="{{ path('area_show', {id: order.deliveryAddress.recieverArea.id}) }}">
+                                            {{ order.DeliveryAddress.recieverArea.nameEn }}
+                                            - {{ order.DeliveryAddress.recieverArea.nameAr }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <th>Reciever Locations</th>
+                                <td>{{ order.deliveryAddress.recieverLocations }}</td>
+                            </tr>
+                            <tr>
+                                <th>Additional Notes</th>
+                                <td>{{ order.deliveryAddress.notes }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if not is_granted('ROLE_SHOP') %}
+            <div class="w-100 d-flex justify-content-center ">
+                <div class="card col-lg-11 mt-3">
+                    <div class="card-body">
+                        <div class="card-title mt-3 text-info">
+                            Billing informations
+                            <hr>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th>Payment Status</th>
+                                    <td>
+                                        {% if(order.paymentStatus == 'paid') %}
+                                            <div class="badge badge-success">
+                                                Paid
+                                            </div>
+                                        {% elseif(order.paymentStatus == 'not_paid') %}
+                                            <div class="badge badge-danger">
+                                                Not Paid
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Date</th>
+                                    <td>{{ order.paymentDate|date('d M Y H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Method</th>
+                                    <td>{{ order.paymentMethod|capitalize }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Discount Voucher</th>
+                                    <td>{{ order.discountVoucher.code ?? 'No voucher applied' }}</td>
+                                </tr>
+                                {% if order.discountVoucher %}
+                                    <tr>
+                                        <th>Discount Voucher Percentage</th>
+                                        <td>{{ order.discountVoucher.discountPercentage }} %</td>
+                                    </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Greetings informations
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th>Message Link</th>
+                                <td>{{ order.messageLink }}</td>
+                            </tr>
+                            <tr>
+                                <th>Message From</th>
+                                <td>{{ order.messageFrom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Hide Sender Name</th>
+                                <td>
+                                    {% if order.hideSender %}
+                                        <i class="fas fa-check text-success"
+                                           style="font-size: 1.5rem"></i>
+                                    {% else %}
+                                        <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Message To</th>
+                                <td>{{ order.messageTo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Message</th>
+                                <td>
+                                    <p class="text-justify">{{ order.message }}</p>
+                                </td>
+                            </tr>
+                            {% if not is_granted('ROLE_SHOP') and order.messageFile %}
+                                <tr>
+                                    <th>Message File</th>
+                                    <td>
+                                        <a href="{{ path('download_message_file', {id: order.messageFile.id}) }}">{{ order.messageFile.file }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>QrCode (don't use it before client)</th>
+                                    <td>
+                                        <img src="{{ asset('../../qrCodes/') ~ order.messageFile.qrCode }}" alt=""
+                                             style=" width: 250px; height: 250px; border-radius: 0;">
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info">
+                        Cart informations
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table order-details-table">
+                            <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                {% if not is_granted('ROLE_SHOP') %}
+                                    <th>Unit Price</th>
+                                    <th>Price</th>
+                                    <th>Discountable</th>
+                                    <th>Discount Amount</th>
+                                    <th>Sub Total</th>
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for detail in order.orderDetails %}
+                                <tr>
+                                    <td>
+                                        {% if not is_granted('ROLE_SHOP') %}
+                                            <a href="{{ path('product_show', {id: detail.product.id}) }}"
+                                               target="_blank">{{ detail.product.name }}</a>
+                                        {% else %}
+                                            <a href="{{ path('shop_product_show', {id: detail.product.id}) }}"
+                                               target="_blank">{{ detail.product.name }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ detail.quantity }}</td>
+                                    {% if not is_granted('ROLE_SHOP') %}
+                                        <td>{{ detail.price }} SAR</td>
+                                        <td>{{ detail.subTotal }} SAR</td>
+                                        <td>
+                                            {% if detail.discountable %}
+                                                <i class="fas fa-check text-success"
+                                                   style="font-size: 1.5rem"></i>
+                                            {% else %}
+                                                <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ detail.discountAmount }} SAR</td>
+                                        <td>{{ detail.subTotalAfterDiscount }} SAR</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            {% if not is_granted('ROLE_SHOP') %}
+                                <tr>
+                                    <td colspan="7"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <th>VAT</th>
+                                    <td>{{ order.VAT }} %</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <th>VAT Amount</th>
+                                    <td>{{ order.VATAmount }} %</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <th>Delivery Price</th>
+                                    <td>{{ order.deliveryAddress.recieverArea.deliveryPrice }} SAR</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <th class="bg-info text-white">Total</th>
+                                    <th class="bg-info text-white">{{ order.totalPrice }} SAR</th>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="card-title mt-3 text-info  d-flex justify-content-between">
+                        Notes
+                        <button class="btn"
+                                style="padding: 2px;"
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#modalNote">
+                            <i class="fas fa-plus-circle text-primary"></i>
+                        </button>
+                    </div>
+                    <hr>
+                    <div>
+                        {% for note in order.notes|reverse %}
+                            <div class="col-12">
+                                <h6>{{ note.createdAt|date('d M Y H:i') }} By : {{ note.user.fullname }} </h6>
+                                <p class="ml-3 text-justify">{{ note.note }}</p>
+                            </div>
+                            <hr>
+                        {% else %}
+                            No previous notes
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center ">
+            <div class="card col-lg-11 mt-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-around flex-wrap">
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('order_edit', {id : order.id}) }}"
+                               class="btn btn-primary ">Edit</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('order_delete', {id : order.id}) }}"
+                               class="btn btn-danger ">Delete</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_SHOP') and order.shop is null %}
+                            <a href="{{ path('assign_order', {id : order.id}) }}"
+                               class="btn btn-info ">Assign</a>
+                        {% endif %}
+                        <a href="{{ path('order_index') }}"
+                           class="btn btn-light ">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNote" tabindex="-1" role="dialog"
+         aria-labelledby="modalNoteTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNoteTitle">Add a new note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="submit-inventory" type="submit" class="btn btn-primary">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

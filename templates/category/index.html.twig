@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List categories{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Categories
+        </h3>
+        <a href="{{ path('category_new') }}">
+            <i class="mdi mdi-library-plus text-primary icon-md"></i>
+        </a>
+    </div>
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Category name</th>
+                        <th>Display Icon</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <img class="img-fluid"
+                                     src="
+                                     {% if category.icon is not null %}
+                                        {{ vich_uploader_asset(category, 'iconFile') }}
+                                     {% else %}
+                                        {{ asset('/build/dashboard/no_image.png') }}
+                                     {% endif %}
+                                    "
+                                     alt="{{ category.icon }}"
+                                     style="border-radius: unset; width: 50px; height: auto;">
+                            </td>
+                            <td>
+                                <a href="{{ path('category_show', {'id': category.id}) }}">
+                                    <i class="mdi mdi-eye text-primary" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('category_delete', {'id': category.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('category_edit', {'id': category.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

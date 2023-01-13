@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Orders list{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="page-header">
+        <h3 class="page-title">
+            {% if subTitle is defined %} {{ subTitle }}{% endif %} Orders
+        </h3>
+        {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('order_new') }}">
+                <i class="fas fa-plus-circle text-primary icon-md"></i>
+            </a>
+        {% endif %}
+    </div>
+
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>REF</th>
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                            <th>Amount</th>
+                        {% endif %}
+                        <th>Date</th>
+                        <th>Customer</th>
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                            <th>City</th>
+                        {% endif %}
+                        <th>Delivery Date</th>
+                        <th>Status</th>
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                            <th>Paid</th>
+                            <th>Origin</th>
+                        {% endif %}
+                        <th>Last Note</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.reference }}</td>
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                                <td>{{ order.totalPrice }} SAR</td>
+                            {% endif %}
+                            <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                            <td>{{ order.client.fullName }}</td>
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') and order.deliveryAddress.recieverArea %}
+                                <td>
+                                    <a href="{{ path('area_show', {id : order.deliveryAddress.recieverArea.id}) }}"
+                                       target="_blank">
+                                        {{ order.deliveryAddress.recieverArea }}
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            <td>
+                                {% if order.deliverySlot %}
+                                    {{ order.deliveryDate|date('d/m/Y') }} {{ order.deliverySlot.deliveryAt|date('ga') }}
+                                    - {{ order.deliverySlot.deliveryTo|date('ga') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(order.status == 'new') %}
+                                    {% if order.shop is null %}
+                                        <div class="badge badge-warning">
+                                            New
+                                        </div>
+                                    {% else %}
+                                        <div class="badge badge-primary">
+                                            Assigned to <br> {{ order.shop.fullName }}
+                                        </div>
+                                    {% endif %}
+                                {% elseif(order.status == 'shipped') %}
+                                    <div class="badge badge-info">
+                                        Delivering
+                                    </div>
+                                {% elseif(order.status == 'delivered') %}
+                                    <div class="badge badge-success">
+                                        Delivered by <br> {{ order.driver.fullName ?? '' }}
+                                    </div>
+                                {% elseif(order.status == 'canceled') %}
+                                    <div class="badge badge-danger">
+                                        Canceled
+                                    </div>
+                                {% endif %}
+                            </td>
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                                <td>
+                                    {% if(order.paymentStatus == 'paid') %}
+                                        <i class="fas fa-check text-success"
+                                           style="font-size: 1.5rem"></i>
+                                    {% else %}
+                                        <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if(order.orderOrigin == 'ios') %}
+                                        <i class="fab fa-apple fa-2x text-info"></i>
+                                    {% elseif(order.orderOrigin == 'android') %}
+                                        <i class="fab fa-android fa-2x text-info"></i>
+                                    {% elseif(order.orderOrigin == 'dashboard') %}
+                                        <i class="fas fa-tachometer-alt fa-2x text-info"></i>
+                                    {% elseif(order.orderOrigin == 'website') %}
+                                        <i class="fab fa-internet-explorer fa-2x text-info"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div style="height: 60px;overflow: auto;">
+                                        {{ order.notes|reverse[0].note ?? '' }}
+                                    </div>
+                                </td>
+                            {% endif %}
+                            <td>
+                                <a href="{{ path('order_show', {'id': order.id}) }}">
+                                    <i class="mdi mdi-eye text-primary" style="font-size: 1.3rem"></i>
+                                </a>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a href="{{ path('order_delete', {'id': order.id}) }}">
+                                        <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a href="{{ path('order_edit', {'id': order.id}) }}">
+                                        <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                    </a>
+                                    <a href="{{ path('cancel_order', {id: order.id}) }}">
+                                        <i class="fas fa-times text-info"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

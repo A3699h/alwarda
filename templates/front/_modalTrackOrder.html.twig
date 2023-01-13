@@ -1,0 +1,69 @@
+<div id="trackOrderModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="header">
+                <h1 class="big-title">{{ 'Track Order'|trans  }}</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mb-5 col-12 col-md-10 offset-md-1 d-flex flex-column justify-content-around">
+                <h4>{{ 'Status'|trans  }}</h4>
+                <div class="order-status d-flex align-items-center">
+                    <span data-step="0" class="">
+                        <img data-icon="{{ asset('build/front/check.svg') }}"
+                             data-validated-icon="{{ asset('build/front/check-validated.svg') }}"
+                             src="{{ asset('build/front/check.svg') }}" alt="order validated icon">
+                        <span>{{ 'Verified'|trans  }}</span>
+                    </span>
+                    <i data-step="1" class=""></i>
+                    <span data-step="1" class="">
+                        <img data-icon="{{ asset('build/front/time-circle.svg') }}"
+                             data-validated-icon="{{ asset('build/front/time-circle-validated.svg') }}"
+                             src="{{ asset('build/front/time-circle.svg') }}" alt="order validated icon">
+                        <span>{{ 'Preparing'|trans  }}</span>
+                    </span>
+                    <i data-step="2" class=""></i>
+                    <span data-step="2" class="">
+                        <img data-icon="{{ asset('build/front/delivery-truck.svg') }}"
+                             data-validated-icon="{{ asset('build/front/delivery-truck-validated.svg') }}"
+                             src="{{ asset('build/front/delivery-truck.svg') }}" alt="order validated icon">
+                        <span>{{ 'Delivering'|trans  }}</span>
+                    </span>
+                    <i data-step="3" class=""></i>
+                    <span data-step="3" class="">
+                        <img data-icon="{{ asset('build/front/delivered.svg') }}"
+                             data-validated-icon="{{ asset('build/front/delivered-validated.svg') }}"
+                             src="{{ asset('build/front/delivered.svg') }}" alt="order validated icon">
+                        <span>{{ 'Delivered'|trans  }}</span>
+                    </span>
+                </div>
+                <div class="order-sommary mt-5 ">
+                    {# Products go here via JS #}
+                </div>
+                <div class="order-delivery mt-5 d-flex flex-wrap">
+                    <div class="mt-2 col-md-6 col-12 justify-content-start">
+                        <h6>{{ 'Address'|trans  }}</h6>
+                        <p id="trackOrderModalAddress">Street</p>
+                    </div>
+                    <div class="mt-2 col-md-6 col-12 justify-content-start">
+                        <h6>{{ 'Total Price'|trans  }}</h6>
+                        <p id="trackOrderTotalPrice">200 SAR</p>
+                    </div>
+                    <div class="mt-2 col-md-6 col-12 justify-content-start">
+                        <h6>{{ 'Reciepient name'|trans  }}</h6>
+                        <p id="trackOrderModalRecipientName">Full name</p>
+                    </div>
+                    <div class="mt-2 col-md-6 col-12 justify-content-start">
+                        <h6>{{ 'Order'|trans  }} #</h6>
+                        <p id="trackOrderModalOrderRef">8544520-22</p>
+                    </div>
+                    <div class="mt-2 col-md-6 col-12 justify-content-start">
+                        <h6>{{ 'Delivery time'|trans  }}</h6>
+                        <p id="trackOrderModalDeliveryTime">22 march 2021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

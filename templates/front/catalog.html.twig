@@ -1,0 +1,297 @@
+{% extends 'front/base.html.twig' %}
+
+
+{% block javascripts %}
+    {# {{ encore_entry_script_tags('frontCatalog') }} #}
+    {# {include frontCatalog from assets/js without encore} #}
+    {# <script src="{{ asset('build/frontCatalog.js') }}"></script> #}
+    {{ encore_entry_script_tags('newCatalog') }}}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('frontCatalog') }}
+{% endblock %}
+
+
+
+
+{% block body %}
+    {% if app.request.locale == 'ar' %}
+        <style>
+            .custom_breadcrumb, .header-section, .body-section, .filter-section, .products-section {
+                direction: rtl;
+            }
+            .header-section .categories-section ul li button {
+                text-align: right;
+            }
+            .header-section .categories-section select {
+                text-align: right;
+            }
+            .header-section h1.big-title {
+                text-align: right;
+            }
+            .header-section {
+                padding-right: 5%;
+            }
+        </style>
+    {% endif %}
+    <div class="container col-lg-7 custom_breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb pl-0">
+                <li class="breadcrumb-item"><a href="{{ path('front_index') }}">{{ 'Home'|trans  }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'Catalog'|trans  }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="header-section d-lg-block d-flex justify-content-between align-items-center">
+        <h1 class="big-title">{{ 'Catalog'|trans  }}</h1>
+        <div class="categories-section">
+            <ul class="list-unstyled d-lg-flex d-none">
+                {% for category in categories %}
+                    <li>
+                        <button data-value="{{ category.name }}"
+                                data-category-id="{{ category.id }}"
+                                class="btn selectCategory {{ loop.index == 1 ? 'active' }}">
+                            {{ app.request.locale =='en' ? category.name : category.nameAr }}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+            <select class="d-block d-lg-none" name="catalogSelect" id="catalogSelect">
+                {% for category in categories %}
+                    <option {{ loop.index == 1 ? 'selected' }}
+                            value="{{ category.id }}">{{ app.request.locale =='en' ? category.name : category.nameAr }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="body-section w-100 d-flex mt-5 flex-lg-row flex-column">
+        <div class="filter-section d-flex justify-content-between justify-content-lg-start align-items-start flex-lg-column flex-sm-row flex-column  container-lg container-fluid pr-lg-5 pl-lg-5 pt-lg-5 h-100">
+            <div class="dropdown col-12 col-sm-4 col-lg-12" id="sortFilter">
+                <button
+                        class="btn text-justify w-100"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        data-text="{{ 'Sort by'|trans  }}"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{ 'Sort by'|trans  }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" data-sort="none">{{ 'Reset'|trans  }}</a>
+                    <a class="dropdown-item" href="#" data-sort="priceAsc">{{ 'Lower price'|trans  }}</a>
+                    <a class="dropdown-item" href="#" data-sort="priceDesc">{{ 'Higher price'|trans  }}</a>
+                </div>
+            </div>
+            <div class="dropdown mt-lg-5 mt-5 mt-sm-0 col-12 col-sm-4 col-lg-12" id="colorFilter">
+                <button
+                        class="btn text-justify w-100"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        data-text="{{ 'Color'|trans  }}"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{ 'Color'|trans  }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" data-sort="none">{{ 'All'|trans  }}</a>
+                    {% for color in colors %}
+                        <a class="dropdown-item" href="#" data-sort="{{ color.code }}">{{ app.request.locale == 'en' ? color.color : color.colorAr }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-lg-5 mt-5 mt-sm-0 d-flex flex-column justify-content-center align-items-center col-12 col-sm-4 col-lg-12">
+                <span>{{ 'Price Range'|trans  }}</span>
+                <div class="mt-3" id="priceFilter"></div>
+                <div class="mt-3 text-center">
+                    <span class="prices" id="filterMinPrice">0</span> SAR -
+                    <span class="prices" id="filterMaxPrice">{{maxPrice}}</span> SAR
+                </div>
+            </div>
+        </div>
+        <div class="products-section" id="productSection"
+             data-assets-dir="{{ asset('public/images/products/') }}"
+             data-cart-icon="{{ asset('build/front/cart-white.svg') }}"
+             data-heart-icon="{{ asset('build/front/heart.svg') }}">
+            {# Products go here via JS #}
+            <div class="body-many col-lg-11 col-12 d-flex flex-wrap">
+            {% for product in products %}
+                <div class="h-50 mt-4 col-lg-3 col-12 col-sm-6">
+                    <div class="flower-card h-100 w-100 d-flex flex-column" 
+                    data-id="{{ product.id }}"
+                    data-name="{{ app.request.locale == 'en' ? product.name : product.nameAr }}"
+                    data-price="{{ product.price }}"
+                    data-color="{{ app.request.locale == 'en' ? product.color.color : product.color.colorAr }}"
+                    data-images="{{ images_html[product.id] }}"
+                    data-quantity="1"
+                    data-description="{{ app.request.locale == 'en' ? product.description : product.descriptionAr }}">
+                        <div class="flower-image-container">
+                            <div class="w-100 h-100">
+                               <img src="{{ asset('http://iwoztla.cluster031.hosting.ovh.net/images/products/' ~ images[product.id]) }}" alt="product image">
+                            </div>
+                        </div>
+                        <h3 class="text-center">{{app.request.locale == 'en' ? product.name : product.nameAr}}</h3>
+                        <h4 class="d-lg-none d-block">{{product.price}} SAR</h4>
+                        <div class="flower-card-footer-mobile d-flex d-lg-none justify-content-between align-items-center">
+                            <button class="btnAddCart btn">{{ 'Add to Cart'|trans }}</button>
+                            <button class="btn d-none">
+                                <img src="{{ asset('build/front/heart.svg') }}" alt="heart icon">
+                            </button>
+                        </div>
+                        <div class="flower-card-footer mt-auto mb-3 d-none d-lg-flex justify-content-around align-items-center">
+                            <button class="btn d-none">
+                                <img src="{{ asset('build/front/heart.svg') }}" alt="heart icon">
+                            </button>
+                            <h4>{{product.price}} SAR</h4>
+                            <button class="btnAddCart btn cart-icon">
+                                <img src="{{ asset('build/front/cart-white.svg') }}" alt="cart icon">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {# <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="{{ asset('http://iwoztla.cluster031.hosting.ovh.net/images/products/' ~ images[product.id]) }}" alt="">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <h3>{{ app.request.locale == 'en' ? product.name : product.nameAr }}</h3>
+                        </div>
+                        <div class="product-card-price">
+                            <span>{{ product.price }} SAR</span>
+                        </div>
+                        <div class="product-card-color">
+                            <span>{{ app.request.locale == 'en' ? product.color.color : product.color.colorAr }}</span>
+                        </div>
+                        <div class="product-card-btns flower-card"
+                            data-id="{{ product.id }}"
+                            data-name="{{ app.request.locale == 'en' ? product.name : product.nameAr }}"
+                            data-price="{{ product.price }}"
+                            data-color="{{ app.request.locale == 'en' ? product.color.color : product.color.colorAr }}"
+                            data-images="{{ images_html[product.id] }}"
+                            data-quantity="1"
+                            data-description="{{ app.request.locale == 'en' ? product.description : product.descriptionAr }}"
+                        >
+                            <button class="btn btn-outline-primary btn-sm btnAddCart" data-toggle="modal"
+                                    data-target="#productModal"
+                                    data-product-id="{{ product.id }}">
+                                {{ 'View'|trans  }}
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm addToCart"
+                                    data-product-id="{{ product.id }}">
+                                {{ 'Add to cart'|trans  }}
+                            </button>
+                        </div>
+                    </div>
+                </div> #}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="footer-section text-center mt-5">
+        <button class="load-more-btn btn">{{ 'Load more'|trans  }}</button>
+    </div>
+    
+
+    {% include ('front/_modalSingleProduct.html.twig')%}
+    <style>
+        .products-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .product-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+    
+        .product-card-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+    
+        .product-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    
+        .product-card-body {
+            padding: 20px;
+        }
+    
+        .product-card-title {
+            height: 50px;
+            overflow: hidden;
+        }
+    
+        .product-card-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            margin: 0;
+        }
+    
+        .product-card-price {
+            margin: 10px 0;
+        }
+    
+        .product-card-price span {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+        }
+    
+        .product-card-color {
+            margin: 10px 0;
+        }
+    
+        .product-card-color span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+    
+        .product-card-btns {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .product-card-btns button {
+            width: 45%;
+        }
+    
+        .product-card-btns button:first-child {
+            background-color: #fff;
+            border: 1px solid #000;
+            color: #000;
+        }
+    
+        .product-card-btns button:last-child {
+            background-color: #000;
+            border: 1px solid #000;
+            color: #fff;
+        }
+    
+        .product-card-btns button:hover {
+            background-color: #000;
+            border: 1px solid #000;
+            color: #fff;
+        }
+    
+        .product-card-btns button:focus {
+            background-color: #000;
+            border: 1px solid #000;
+            color: #fff;
+        }
+    
+        .product-card-btns button:active {
+            background-color
+
+    </style>
+{% endblock %}
+

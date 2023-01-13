@@ -1,0 +1,100 @@
+security:
+  encoders:
+    App\Entity\User:
+      algorithm: auto
+
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  providers:
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+    api_user_provider:
+      entity:
+        class: App\Entity\User
+        property: phone
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+      provider: app_user_provider
+
+    api_login:
+      pattern:  ^/api/login
+      stateless: true
+      anonymous: true
+      provider: api_user_provider
+      json_login:
+        check_path:               /api/login_check
+        username_path:            phone
+        success_handler:          lexik_jwt_authentication.handler.authentication_success
+        failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+    api:
+      pattern:   ^/api
+      stateless: true
+      anonymous: true
+      provider: api_user_provider
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+    back:
+      pattern: ^/panel
+      anonymous: lazy
+      provider: app_user_provider
+      guard:
+        authenticators:
+          - App\Security\AppUserAuthentificatorAuthenticator
+      logout:
+        path: app_logout
+        target: app_login
+
+    main:
+      anonymous: lazy
+      provider: app_user_provider
+      guard:
+        authenticators:
+          - App\Security\FrontUserAuthentificatorAuthenticator
+      logout:
+        path: front_logout
+        target: front_index
+
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
+
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  #  role_hierarchy:
+  #    ROLE_SHOP:        ROLE_CLIENT
+  #    ROLE_ADMIN:       ROLE_SHOP
+  #    ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+  access_control:
+    - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/client, roles: ROLE_CLIENT }
+    - { path: ^/api/driver, roles: ROLE_DRIVER }
+    - { path: ^/panel/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/panel/products, roles: ROLE_SHOP }
+    - { path: ^/panel/product-show, roles: ROLE_SHOP }
+    - { path: ^/panel/assign-order, roles: ROLE_SHOP }
+    - { path: ^/panel/order/my-orders, roles: ROLE_SHOP }
+    - { path: ^/panel/area, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/order/delete, roles: ROLE_SUPER_ADMIN }
+    - { path: ^/panel/order/new, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/order/edit, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/category, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/discount-voucher, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/product, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/slot, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/user/admin, roles: ROLE_SUPER_ADMIN }
+    - { path: ^/panel/user, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/chartData, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel/client, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: ^/panel, roles: [ROLE_SHOP, ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+    - { path: /profile, roles: ROLE_CLIENT }

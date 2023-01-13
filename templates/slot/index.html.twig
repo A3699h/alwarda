@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Slots{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="page-header">
+        <h3 class="page-title">
+            Slots
+        </h3>
+        <button id="modal-slot"
+                style="padding: 0;"
+                type="button"
+                class="btn"
+                data-toggle="modal"
+                data-target="#modalSlot">
+            <i class="fas fa-plus-circle text-primary" style="font-size: 1.5rem"></i>
+        </button>
+    </div>
+
+    <div class="card" style="min-height: 100%">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Order ID</th>
+                        <th>Max Orders</th>
+                        <th>Accept orders (from:to)</th>
+                        <th>Delivery (from:to)</th>
+                        <th>Active</th>
+                        <th>Sat.</th>
+                        <th>Sun.</th>
+                        <th>Mon.</th>
+                        <th>Tues.</th>
+                        <th>Wed.</th>
+                        <th>Thu.</th>
+                        <th>Fri.</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for slot in slots %}
+                        <tr>
+                            <td>{{slot.deliveryAt|date('ga')}} - {{slot.deliveryTo|date('ga')}}</td>
+                            <td>Order ID</td>
+                            <td>{{ slot.maxOrders }}</td>
+                            <td>{{slot.showAt|date('H:i:s')}} - {{slot.closeAt|date('H:i:s')}}</td>
+                            <td>{{slot.deliveryAt|date('H:i:s')}} - {{slot.deliveryTo|date('H:i:s')}}</td>
+                            <td>
+                                {% if(slot.active == '1') %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.saturday == '1') %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.sunday == '1') %}
+                                   <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.monday == '1') %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.tuesday == '1') %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.wednesday == '1') %}
+                                   <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.thursday == '1') %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if(slot.friday == '1') %}
+                                    <i class="fas fa-check text-success"
+                                       style="font-size: 1.5rem"></i>
+                                {% else %}
+                                    <i class="fas fa-times text-danger" style="font-size: 1.5rem"></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ slot.type|capitalize }}</td>
+                            <td>
+                                <a href="{{ path('slot_delete', {'id': slot.id}) }}">
+                                    <i class="mdi mdi-delete text-danger" style="font-size: 1.3rem"></i>
+                                </a>
+                                <a href="{{ path('slot_edit', {'id': slot.id}) }}">
+                                    <i class="mdi mdi-grease-pencil text-success" style="font-size: 1.3rem"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSlot" tabindex="-1" role="dialog"
+         aria-labelledby="modalSlotTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSlotTitle">Add a new slot</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex">
+                    <div class="col-6">
+                        {{ form_row(form.name, { 'attr': {'tabindex': '1'}}) }}
+                        {{ form_row(form.showAt, { 'attr': {'tabindex': '3'}}) }}
+                        {{ form_row(form.deliveryAt, { 'attr': {'tabindex': 5}}) }}
+                        {{ form_row(form.type, { 'attr': {'tabindex': '7'}}) }}
+                    </div>
+                    <div class="col-6">
+                        {{ form_row(form.maxOrders, { 'attr': {'tabindex': '2'}}) }}
+                        {{ form_row(form.closeAt, { 'attr': {'tabindex': '4'}}) }}
+                        {{ form_row(form.deliveryTo, { 'attr': {'tabindex': '6'}}) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="submit-inventory" type="submit" class="btn btn-primary">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .bootstrap-datetimepicker-widget {
+            display: block;
+        }
+
+        @media (min-width: 576px) {
+            .modal-dialog {
+                max-width: 60%;
+            }
+        }
+
+    </style>
+{% endblock %}

@@ -1,0 +1,102 @@
+{{ form_start(form) }}
+<div class="d-flex flex-column ">
+    <div class="w-100 d-flex justify-content-around flex-wrap">
+        <div class="card col-lg-5 mt-3">
+            <div class="card-body">
+                {{ form_row(form.SKU) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.nameAr) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.descriptionAr) }}
+                {{ form_row(form.type) }}
+                {{ form_row(form.color) }}
+                {{ form_row(form.designedBy) }}
+            </div>
+        </div>
+        <div class="card col-lg-5 mt-3">
+            <div class="card-body">
+                {{ form_row(form.cost) }}
+                {{ form_row(form.benefit) }}
+                <div class="form-group">
+                    <label>Price (SAR)</label>
+                    <label id="product_calculated_price"
+                           class="form-control"
+                           style="background-color: #fffade;">
+                    </label>
+                </div>
+                {{ form_row(form.category) }}
+                {{ form_row(form.enabled) }}
+                {{ form_row(form.visible) }}
+                {{ form_row(form.discountable) }}
+                {{ form_row(form.package) }}
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Product Description (English)
+                    <hr>
+                </div>
+                <div>
+                    {{ form_widget(form.longDescription) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Product Description (Arabic)
+                    <hr>
+                </div>
+                <div>
+                    {{ form_widget(form.longDescriptionAr) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="card-title mt-3 text-info">
+                    Product Images
+                    <hr>
+                </div>
+                <div>
+                    <ul class="products" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+                        {% for image in form.images %}
+                            <li>{{ form_row(image.imageFile) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center ">
+        <div class="card col-lg-11 mt-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-around flex-wrap">
+                    <button class="btn btn-primary ">{{ button_label|default('Save') }}</button>
+                    {% if form.vars.value.id is not null %}
+                        <a href="{{ path('product_delete', {id:form.vars.value.id}) }}"
+                           class="btn btn-danger ">Delete</a>
+                        <a href="{{ path('product_show', {id:form.vars.value.id}) }}"
+                           class="btn btn-info ">View</a>
+                    {% endif %}
+                    <a href="{{ path('product_index') }}" class="btn btn-light ">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('product_form') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('product_form') }}
+{% endblock %}
