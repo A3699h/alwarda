@@ -142,11 +142,6 @@ class Product
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderDetail::class, mappedBy="product")
-     */
-    private $orderDetails;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      * @JMS\Groups({"client"})
      */
@@ -178,7 +173,6 @@ class Product
     {
         $this->images = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->orderDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -419,37 +413,6 @@ class Product
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeAvailableProduct($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|OrderDetail[]
-     */
-    public function getOrderDetails(): Collection
-    {
-        return $this->orderDetails;
-    }
-
-    public function addOrderDetail(OrderDetail $orderDetail): self
-    {
-        if (!$this->orderDetails->contains($orderDetail)) {
-            $this->orderDetails[] = $orderDetail;
-            $orderDetail->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderDetail(OrderDetail $orderDetail): self
-    {
-        if ($this->orderDetails->contains($orderDetail)) {
-            $this->orderDetails->removeElement($orderDetail);
-            // set the owning side to null (unless already changed)
-            if ($orderDetail->getProduct() === $this) {
-                $orderDetail->setProduct(null);
-            }
         }
 
         return $this;
